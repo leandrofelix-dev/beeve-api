@@ -32,7 +32,7 @@ export async function getAllEvents(req: Request, res: Response) {
 
 export async function createEvent(req: Request, res: Response) {
   const data = req.body
-  const { name, date, location, description, maxParticipants, creator } = data
+  const { name, date, location, description, maxParticipants, creator, isPublic } = data
   const eventCode = generateCode()
   try {
     const event = await prisma.event.create({
@@ -43,6 +43,7 @@ export async function createEvent(req: Request, res: Response) {
         location,
         description,
         maxParticipants,
+        isPublic,
         eventCode,
       },
     })

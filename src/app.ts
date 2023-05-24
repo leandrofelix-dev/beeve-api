@@ -34,7 +34,7 @@ app.use(
 app.use('/api/', router)
 
 app.listen(port, async () => {
-  Log.info(`✨ The API is started in: ${port} ✅`)
+  console.log(`✨ The API is started in: ${port} ✅`)
 })
 
 export const prisma = new PrismaClient({
