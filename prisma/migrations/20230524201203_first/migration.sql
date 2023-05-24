@@ -1,7 +1,8 @@
 -- CreateTable
 CREATE TABLE "users" (
     "id" TEXT NOT NULL PRIMARY KEY,
-    "name" TEXT NOT NULL,
+    "firstName" TEXT NOT NULL,
+    "lastName" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL
 );
@@ -16,6 +17,7 @@ CREATE TABLE "events" (
     "description" TEXT NOT NULL,
     "maxParticipants" INTEGER NOT NULL,
     "eventCode" TEXT NOT NULL,
+    "isPublic" BOOLEAN NOT NULL,
     CONSTRAINT "events_idCreator_fkey" FOREIGN KEY ("idCreator") REFERENCES "users" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
