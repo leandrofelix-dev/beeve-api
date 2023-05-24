@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
 
-import { event } from '../middlewares/dataRequirements'
+import { event } from './dataRequirements'
 
 export function createEventValidator(
   req: Request,

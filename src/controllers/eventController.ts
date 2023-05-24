@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import { prisma } from '../app'
 import { generateCode } from '../utils/createEventCode'
+import Logger from '../utils/logger'
 
 export async function getEvent(req: Request, res: Response) {
   const eventCode = req.params.code
@@ -13,7 +14,7 @@ export async function getEvent(req: Request, res: Response) {
     }
     return res.status(200).json(event)
   } catch (e: any) {
-    console.log(`Error: ${e.message}`)
+    console.log(`error: ${e.message}`)
   }
 }
 
@@ -23,9 +24,10 @@ export async function getAllEvents(req: Request, res: Response) {
     if (event.length === 0) {
       return res.status(404).json({ msg: 'no events found' })
     }
+    Logger.info('All events were found')
     return res.status(200).json(event)
   } catch (e: any) {
-    console.log(`Error: ${e.message}`)
+    console.log(`error: ${e.message}`)
   }
 }
 
@@ -48,6 +50,6 @@ export async function createEvent(req: Request, res: Response) {
     console.log(data)
     return res.status(201).json(event)
   } catch (e: any) {
-    console.log(`Error: ${e.message}`)
+    console.log(`error: ${e.message}`)
   }
 }

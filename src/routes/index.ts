@@ -1,15 +1,15 @@
-import { Router, Request, Response } from 'express'
+import { Router, Response } from 'express'
 import {
   createEvent,
   getEvent,
   getAllEvents,
 } from '../controllers/eventController'
-import { createEventValidator } from '../validators/createEventValidator'
+import { createEventValidator } from '../middlewares/createEventValidator'
 
 const router = Router()
 
 export default router
-  .get('/test', (req: Request, res: Response) => {
+  .get('/test', (res: Response) => {
     res.status(200).json({ msg: 'Hi? the API is working here👨🏽‍🚀' })
   })
   .get('/event/:code', getEvent)
