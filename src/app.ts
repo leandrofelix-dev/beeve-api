@@ -5,7 +5,7 @@ import cors from 'cors'
 import { PrismaClient } from '@prisma/client'
 
 import router from './routes'
-import Logger from './utils/logger'
+import Log from './utils/logger'
 
 require('dotenv').config()
 
@@ -34,7 +34,7 @@ app.use(
 app.use('/api/', router)
 
 app.listen(port, async () => {
-  Logger.info(`
+  Log.info(`
   ✨ The API is started in: ${port} ✅`)
 })
 

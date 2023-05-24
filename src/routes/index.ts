@@ -10,7 +10,7 @@ const router = Router()
 
 export default router
   .get('/test', (res: Response) => {
-    res.status(200).json({ msg: 'Hi? the API is working here👨🏽‍🚀' })
+    res.status(200).json({ msg: 'Hi? the API is working!👨🏽‍🚀' })
   })
   .get('/event/:code', getEvent)
   .get('/events', getAllEvents)
