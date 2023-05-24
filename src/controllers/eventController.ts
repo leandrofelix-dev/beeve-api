@@ -1,7 +1,6 @@
 import { Request, Response } from 'express'
 import { prisma } from '../app'
 import { generateCode } from '../utils/createEventCode'
-
 import Log from '../utils/logger'
 
 export async function getEvent(req: Request, res: Response) {
@@ -47,6 +46,7 @@ export async function createEvent(req: Request, res: Response) {
         eventCode,
       },
     })
+    Log.info(`event created: ${eventCode}`)
     return res.status(201).json(event)
   } catch (e: any) {
     Log.error(`error: ${e.message}`)

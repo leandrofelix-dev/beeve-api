@@ -9,13 +9,14 @@ datasource db {
 
 model User {
   id           String         @id @default(uuid())
-  name         String
+  firstName    String
+  lastName     String
   email        String         @unique
   password     String
-  Registration Registration[]
-  Event        Event[]
+  Registrations Registration[]
+  createdEvents        Event[]
 
-  @@map(name:"users")
+  @@map("users")
 }
 
 model Event {
@@ -27,18 +28,19 @@ model Event {
   description     String
   maxParticipants Int
   eventCode       String         @unique
+  isPublic        Boolean
   creator         User           @relation(fields: [idCreator], references: [id])
-  Registration    Registration[]
+  Registrations    Registration[]
 
-  @@map(name:"events")
+  @@map("events")
 }
 
 model Registration {
   id      String @id @default(uuid())
   idUser  String
   idEvent String
-  user    User   @relation(fields: [idUser], references: [id])
+  participant    User   @relation(fields: [idUser], references: [id])
   event   Event  @relation(fields: [idEvent], references: [id])
 
-  @@map(name:"registrations")
+  @@map("registrations")
 }

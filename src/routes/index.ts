@@ -1,4 +1,4 @@
-import { Router, Response } from 'express'
+import { Router, Response, Request } from 'express'
 import {
   createEvent,
   getEvent,
@@ -9,7 +9,7 @@ import { createEventValidator } from '../middlewares/createEventValidator'
 const router = Router()
 
 export default router
-  .get('/test', (res: Response) => {
+  .get('/test', (req: Request, res: Response) => {
     res.status(200).json({ msg: 'Hi? the API is working!👨🏽‍🚀' })
   })
   .get('/event/:code', getEvent)
