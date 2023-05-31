@@ -5,7 +5,6 @@ import cors from 'cors'
 import { PrismaClient } from '@prisma/client'
 
 import router from './routes'
-import Log from './utils/logger'
 
 require('dotenv').config()
 

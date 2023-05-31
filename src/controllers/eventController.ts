@@ -3,7 +3,7 @@ import { prisma } from '../app'
 import { generateCode } from '../utils/createEventCode'
 import Log from '../utils/logger'
 
-export async function getEvent(req: Request, res: Response) {
+export async function getEventByCode(req: Request, res: Response) {
   const eventCode = req.params.code
   try {
     const event = await prisma.event.findMany({
@@ -32,8 +32,16 @@ export async function getAllEvents(req: Request, res: Response) {
 
 export async function createEvent(req: Request, res: Response) {
   const data = req.body
-  const { name, date, location, description, maxParticipants, creator, isPublic } = data
   const eventCode = generateCode()
+  const {
+    name,
+    date,
+    location,
+    description,
+    maxParticipants,
+    creator,
+    isPublic,
+  } = data
   try {
     const event = await prisma.event.create({
       data: {
