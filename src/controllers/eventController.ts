@@ -32,6 +32,8 @@ export async function getAllEvents(req: Request, res: Response) {
 
 export async function createEvent(req: Request, res: Response) {
   const data = req.body
+  const { coverImage } = req.body
+  coverImage ? req.body.coverImage : ""
   const eventCode = generateCode()
   const {
     name,
@@ -53,10 +55,36 @@ export async function createEvent(req: Request, res: Response) {
         maxParticipants,
         isPublic,
         eventCode,
+        coverUrl: coverImage
       },
     })
     Log.info(`event created: ${eventCode}`)
     return res.status(201).json(event)
+  } catch (e: any) {
+    Log.error(`error: ${e.message}`)
+  }
+}
+
+export async function deleteEvent(req: Request, res: Response) {
+  const id = req.params.id
+  const event = await prisma.event.findUnique({
+    where: {
+      id,
+    },
+  })
+
+  if (!event) {
+    return res.status(404).json({ msg: 'event not found' })
+  }
+
+  try {
+    const deletedEvent = await prisma.event.delete({
+      where: {
+        id,
+      },
+    })
+    Log.info(`event ${id} was be deleted`)
+    return res.status(201).json({ deleted: deletedEvent })
   } catch (e: any) {
     Log.error(`error: ${e.message}`)
   }

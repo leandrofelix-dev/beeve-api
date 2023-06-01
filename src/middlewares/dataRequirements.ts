@@ -8,9 +8,7 @@ export const event = z.object({
   date: z.string().datetime(),
 })
 
-// export const user = z.object({
-//   firstName: z.string().min(2).max(30),
-//   lastName: z.string().min(3).max(50),
-//   email: z.string().email(),
-//   password: z.string().min(8).max(20),
-// })
+export const registration = z.object({
+  idEvent: z.string().uuid(),
+  idUser: z.string().uuid(),
+})

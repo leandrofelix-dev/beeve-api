@@ -29,6 +29,7 @@ model Event {
   maxParticipants Int
   eventCode       String         @unique
   isPublic        Boolean
+  coverUrl        String
   creator         User           @relation(fields: [idCreator], references: [id])
   Registrations    Registration[]
 
