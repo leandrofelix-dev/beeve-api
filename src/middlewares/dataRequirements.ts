@@ -4,7 +4,7 @@ export const event = z.object({
   name: z.string().min(5).max(50),
   location: z.string().min(10).max(100),
   description: z.string().min(20).max(280),
-  maxParticipants: z.number().int().positive(),
+  maxParticipants: z.string().min(1).nullable(),
   date: z.string().datetime(),
 })
 

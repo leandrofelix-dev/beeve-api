@@ -1,24 +1,27 @@
 import { Router, Response, Request } from 'express'
 
-import multer from 'multer'
-
 import {
   createEvent,
   getEventByCode,
   getAllEvents,
   deleteEvent,
 } from '../controllers/eventController'
-import { createEventValidator } from '../middlewares/createEventValidator'
+
 import {
   createRegistration,
   deleteRegistration,
 } from '../controllers/registrationController'
+
+import multer from 'multer'
+
+import { createEventValidator } from '../middlewares/createEventValidator'
 import { createRegistrationValidator } from '../middlewares/createRegistrationValidator'
-import { uploadImage } from '../services/firebase'
 
-const sizeInBytesToOneMegabyte: any = 1024 * 1024
+import uploadImage from '../services/firebase'
 
-const upload = multer({
+const sizeInBytesToOneMegabyte: any = 1024 * 1024 * 1
+
+const Multer = multer({
   storage: multer.memoryStorage(),
   limits: sizeInBytesToOneMegabyte,
 })
@@ -31,7 +34,13 @@ export default router
   })
   .get('/event/:code', getEventByCode)
   .get('/events', getAllEvents)
-  .post('/event', upload.single('coverImage'), uploadImage, createEvent)
+  .post(
+    '/event',
+    Multer.single('coverImage'),
+    uploadImage,
+    createEventValidator,
+    createEvent,
+  )
   .delete('/event/:id', deleteEvent)
 
   .post('/registration', createRegistrationValidator, createRegistration)

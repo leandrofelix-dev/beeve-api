@@ -13,8 +13,8 @@ export async function getEventByCode(req: Request, res: Response) {
       return res.status(404).json({ error: 'invalid event code' })
     }
     return res.status(200).json(event)
-  } catch (e: any) {
-    Log.error(`error: ${e.message}`)
+  } catch (err: any) {
+    Log.error(`error: ${err.message}`)
   }
 }
 
@@ -32,34 +32,41 @@ export async function getAllEvents(req: Request, res: Response) {
 
 export async function createEvent(req: Request, res: Response) {
   const data = req.body
-  const { coverImage } = req.body
-  coverImage ? req.body.coverImage : ""
-  const eventCode = generateCode()
+
+  const firebaseUrl = data.coverUrl
+  const eventCode: string = generateCode()
+  const coverUrl = firebaseUrl
+  
+  const maxParticipants = Number(data.maxParticipants)
+  const isPublic = Boolean(data.isPublic)
+
   const {
     name,
+    idCreator,
     date,
     location,
     description,
-    maxParticipants,
-    creator,
-    isPublic,
   } = data
+
+  console.log(typeof isPublic)
+
   try {
     const event = await prisma.event.create({
       data: {
         name,
-        creator,
+        creator: { connect: { id: idCreator } },
         date,
         location,
         description,
         maxParticipants,
         isPublic,
         eventCode,
-        coverUrl: coverImage
+        coverUrl
       },
     })
     Log.info(`event created: ${eventCode}`)
     return res.status(201).json(event)
+
   } catch (e: any) {
     Log.error(`error: ${e.message}`)
   }

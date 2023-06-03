@@ -1,23 +1,40 @@
-import { Request, Response } from 'express'
+import { Request, Response, NextFunction } from 'express'
 import { prisma } from '../app'
 import Log from '../utils/logger'
 
-export async function createRegistration(req: Request, res: Response) {
-  const data = req.body
-  const { idUser, idEvent } = data
+export async function createRegistration(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
+  const { idUser, idEvent } = req.body
+  const isValidIdUser = await prisma.user.findUnique({ where: { id: idUser } })
+  const isValidIdEvent = await prisma.event.findUnique({
+    where: { id: idEvent },
+  })
+  if (!isValidIdUser || !isValidIdEvent) {
+    return res.status(404).json({ msg: 'invalid id' })
+  }
+
+  const isValidIdRegistration = await prisma.registration.findFirst({
+    where: { idUser, idEvent },
+  })
+  if (isValidIdRegistration) {
+    return res
+      .status(400)
+      .json({ msg: 'user already registered in this event' })
+  }
+
   try {
-    const registration = await prisma.registration.create({
+    await prisma.registration.create({
       data: {
-        idEvent,
         idUser,
+        idEvent,
       },
     })
-    Log.info(
-      `user ${idUser} registred in ${idEvent}, registration: ${registration}`,
-    )
-    return res.status(201).json(registration)
-  } catch (e: any) {
-    Log.error(`error: ${e.message}`)
+  } catch (err: any) {
+    res.status(400).json({ msg: err.errors })
+    Log.error(`error: ${err.message}`)
   }
 }
 
