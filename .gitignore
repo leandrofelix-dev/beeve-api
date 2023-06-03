@@ -2,4 +2,4 @@ features.md
 logs
 node_modules
 .env
-config
+config/firebase.json
