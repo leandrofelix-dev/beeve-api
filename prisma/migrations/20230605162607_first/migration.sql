@@ -7,7 +7,7 @@ CREATE TABLE "users" (
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
     "isLinkedToIfce" BOOLEAN NOT NULL,
-    "studendCode" TEXT,
+    "studentCode" TEXT,
     "course" TEXT,
     "semester" INTEGER,
     "profilePicUrl" TEXT
