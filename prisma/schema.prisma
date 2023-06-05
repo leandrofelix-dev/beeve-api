@@ -11,10 +11,16 @@ model User {
   id           String         @id @default(uuid())
   firstName    String
   lastName     String
+  age          Int
   email        String         @unique
   password     String
+  isLinkedToIfce Boolean
+  studendCode  String?
+  course       String?
+  semester     Int?
+  profilePicUrl String?
   Registrations Registration[]
-  createdEvents        Event[]
+  createdEvents Event[]
 
   @@map("users")
 }

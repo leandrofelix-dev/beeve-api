@@ -5,6 +5,7 @@ import {
   getEventByCode,
   getAllEvents,
   deleteEvent,
+  editEvent,
 } from '../controllers/eventController'
 
 import {
@@ -29,9 +30,13 @@ const Multer = multer({
 const router = Router()
 
 export default router
+
+  // Test
   .get('/test', (req: Request, res: Response) => {
     res.status(200).json({ msg: 'Hi? the API is working!👨🏽‍🚀' })
   })
+
+  // Event
   .get('/event/:code', getEventByCode)
   .get('/events', getAllEvents)
   .post(
@@ -40,8 +45,10 @@ export default router
     uploadImage,
     createEventValidator,
     createEvent,
-  )
+)
   .delete('/event/:id', deleteEvent)
+  .put('/event/:id', editEvent)
 
+  //Registration
   .post('/registration', createRegistrationValidator, createRegistration)
   .delete('/registration/:id', deleteRegistration)

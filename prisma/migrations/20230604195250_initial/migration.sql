@@ -3,8 +3,14 @@ CREATE TABLE "users" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "firstName" TEXT NOT NULL,
     "lastName" TEXT NOT NULL,
+    "age" INTEGER NOT NULL,
     "email" TEXT NOT NULL,
-    "password" TEXT NOT NULL
+    "password" TEXT NOT NULL,
+    "isLinkedToIfce" BOOLEAN NOT NULL,
+    "studendCode" TEXT,
+    "course" TEXT,
+    "semester" INTEGER,
+    "profilePicUrl" TEXT
 );
 
 -- CreateTable
@@ -18,7 +24,7 @@ CREATE TABLE "events" (
     "maxParticipants" INTEGER NOT NULL,
     "eventCode" TEXT NOT NULL,
     "isPublic" BOOLEAN NOT NULL,
-    "coverUrl" TEXT NOT NULL,
+    "coverUrl" TEXT,
     CONSTRAINT "events_idCreator_fkey" FOREIGN KEY ("idCreator") REFERENCES "users" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
 

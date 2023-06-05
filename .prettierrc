@@ -1,0 +1,11 @@
+{
+  "overrides": [
+    {
+      "files": "*.prisma",
+      "options": {
+        "parser": "prisma",
+        "singleQuote": true
+      }
+    }
+  ]
+}
