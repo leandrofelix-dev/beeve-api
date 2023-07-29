@@ -8,7 +8,7 @@ import router from './routes'
 
 require('dotenv').config()
 
-const port = process.env.PORT
+const port = process.env.PORT ?? 3333
 const app = express()
 
 app.use(express.json())

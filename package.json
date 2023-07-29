@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "engines": {
+    "node": ">=20.2.0"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "tsx watch src/app.ts",
@@ -10,9 +13,9 @@
     "migrate": "prisma migrate dev",
     "studio": "prisma studio",
     "create-env": "node ./config/createEnvVariables.js",
-    "build": "tsc",
-    "start": "dist/src/app.ts",
-    "vercel-build": "node ./config/createEnvVariables.js && tsc"
+    "build": "tsup src",
+    "start": "node dist/app.ts",
+    "prod-build": "node ./config/createEnvVariables.js && tsup src"
   },
   "keywords": [],
   "author": "",
@@ -23,11 +26,12 @@
     "@types/cors": "^2.8.13",
     "@types/express": "^4.17.17",
     "@types/multer": "^1.4.7",
-    "@types/node": "^20.1.5",
+    "@types/node": "^20.4.5",
     "eslint": "^8.40.0",
     "prisma": "^4.15.0",
+    "tsup": "^7.1.0",
     "tsx": "^3.12.7",
-    "typescript": "^5.0.4"
+    "typescript": "^5.1.6"
   },
   "dependencies": {
     "@prisma/client": "^4.15.0",
