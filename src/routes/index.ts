@@ -56,7 +56,7 @@ export default router
     '/user',
     createUserValidator,
     createUser
-)
+  )
   .delete('/user/:id', deleteUser)
   .put('/user/:id', editUser)
 

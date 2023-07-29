@@ -1,15 +1,17 @@
 {
-  "name": "iamhere-api",
+  "name": "i-am-here-api",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "tsx watch src/app.ts",
-    "lint": "eslint src  --ext .ts --fix",
+    "lint": "eslint src --ext .ts --fix",
     "migrate": "prisma migrate dev",
     "studio": "prisma studio",
-    "create-env": "node ./config/createEnvVariables.js"
+    "create-env": "node ./config/createEnvVariables.js",
+    "build": "tsc",
+    "start": "dist/src/app.ts"
   },
   "keywords": [],
   "author": "",

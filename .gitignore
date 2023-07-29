@@ -3,3 +3,5 @@ logs
 node_modules
 .env
 config/firebase.json
+.vercel
+dist
