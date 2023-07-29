@@ -14,7 +14,7 @@
     "studio": "prisma studio",
     "create-env": "node ./config/createEnvVariables.js",
     "build": "tsup src",
-    "start": "node dist/app.ts",
+    "start": "node dist/app.js",
     "prod-build": "node ./config/createEnvVariables.js && tsup src"
   },
   "keywords": [],
