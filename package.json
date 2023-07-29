@@ -11,7 +11,8 @@
     "studio": "prisma studio",
     "create-env": "node ./config/createEnvVariables.js",
     "build": "tsc",
-    "start": "dist/src/app.ts"
+    "start": "dist/src/app.ts",
+    "vercel-build": "node ./config/createEnvVariables.js && tsc"
   },
   "keywords": [],
   "author": "",
