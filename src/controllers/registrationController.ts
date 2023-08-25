@@ -32,6 +32,7 @@ export async function createRegistration(
         idEvent,
       },
     })
+    res.status(201).json({ msg: 'registration created' })
   } catch (err: any) {
     res.status(400).json({ msg: err.errors })
     Log.error(`error: ${err.message}`)
@@ -57,7 +58,7 @@ export async function deleteRegistration(req: Request, res: Response) {
       },
     })
     Log.info(`registration ${id} was be deleted`)
-    return res.status(201).json({ deleted: deletedRegistration })
+    return res.status(204).json({ deleted: deletedRegistration })
   } catch (e: any) {
     Log.error(`error: ${e.message}`)
   }

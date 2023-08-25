@@ -82,7 +82,7 @@ export async function deleteEvent(req: Request, res: Response) {
       },
     })
     Log.info(`event ${id} was be deleted`)
-    return res.status(201).json({ deleted: deletedEvent })
+    return res.status(204).json({ deleted: deletedEvent })
   } catch (e: any) {
     Log.error(`error: ${e.message}`)
   }

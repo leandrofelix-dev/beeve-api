@@ -21,6 +21,7 @@ import { createRegistrationValidator } from '../middlewares/createRegistrationVa
 import uploadImage from '../services/firebase'
 import { createUser, deleteUser, editUser } from '../controllers/userController'
 import { createUserValidator } from '../middlewares/createUserValidator'
+import { login } from '../controllers/loginController'
 
 const sizeInBytesToOneMegabyte: any = 1024 * 1024 * 1
 
@@ -47,19 +48,18 @@ export default router
     uploadImage,
     createEventValidator,
     createEvent,
-)
+  )
   .delete('/event/:id', deleteEvent)
   .put('/event/:id', editEvent)
 
   // User
-  .post(
-    '/user',
-    createUserValidator,
-    createUser
-  )
+  .post('/user', createUserValidator, createUser)
   .delete('/user/:id', deleteUser)
   .put('/user/:id', editUser)
 
-  //Registration
+  // Registration
   .post('/registration', createRegistrationValidator, createRegistration)
   .delete('/registration/:id', deleteRegistration)
+
+  // Login
+  .post('/login', login)
