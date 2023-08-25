@@ -93,18 +93,18 @@ export async function editEvent(req: Request, res: Response) {
   const data = req.body
   try {
     const event = await prisma.event.findMany({ where: { id } })
-    if (event.length === 0) { return res.status(404).json({ msg: 'event not found' }) }
+    if (event.length === 0) {
+      return res.status(404).json({ msg: 'event not found' })
+    }
 
     const updatedEvent = await prisma.event.update({
-      where:
-        { id },
+      where: { id },
       data,
     })
 
     Log.info(`event ${id} was be updated`)
     return res.status(200).json({ updated: updatedEvent })
-  }
-  catch (err: any) {
+  } catch (err: any) {
     Log.error(`error: ${err.message}`)
     return res.status(500).json({ error: 'internal server error' })
   }
