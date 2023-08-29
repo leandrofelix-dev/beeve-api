@@ -18,6 +18,21 @@ export async function getEventByCode(req: Request, res: Response) {
   }
 }
 
+export async function getEventById(req: Request, res: Response) {
+  const eventId = req.params.id
+  try {
+    const event = await prisma.event.findMany({
+      where: { id: eventId },
+    })
+    if (event.length === 0) {
+      return res.status(404).json({ error: 'invalid event id' })
+    }
+    return res.status(200).json(event)
+  } catch (err: any) {
+    Log.error(`error: ${err.message}`)
+  }
+}
+
 export async function getAllEvents(req: Request, res: Response) {
   try {
     const event = await prisma.event.findMany()

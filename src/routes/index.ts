@@ -6,6 +6,7 @@ import {
   getAllEvents,
   deleteEvent,
   editEvent,
+  getEventById,
 } from '../controllers/eventController'
 
 import {
@@ -40,7 +41,8 @@ export default router
   })
 
   // Event
-  .get('/event/:code', getEventByCode)
+  .get('/event/code/:code', getEventByCode)
+  .get('/event/:id', getEventById)
   .get('/events', getAllEvents)
   .post(
     '/event',
