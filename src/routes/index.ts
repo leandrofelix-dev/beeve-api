@@ -23,6 +23,7 @@ import uploadImage from '../services/firebase'
 import { createUser, deleteUser, editUser } from '../controllers/userController'
 import { createUserValidator } from '../middlewares/createUserValidator'
 import { login } from '../controllers/loginController'
+import { getUserDetails } from '../controllers/authController'
 
 const sizeInBytesToOneMegabyte: any = 1024 * 1024 * 1
 
@@ -58,6 +59,7 @@ export default router
   .post('/user', createUserValidator, createUser)
   .delete('/user/:id', deleteUser)
   .put('/user/:id', editUser)
+  .get('/auth/user/:id', getUserDetails)
 
   // Registration
   .post('/registration', createRegistrationValidator, createRegistration)
