@@ -3,19 +3,29 @@ import { prisma } from '../app'
 import Log from '../utils/logger'
 
 export async function getUserDetails(req: Request, res: Response) {
-  const { id } = req.params
+  const idUser = req.params.id
   try {
     const user = await prisma.user.findMany({
-      where: { id },
+      where: { id: idUser },
     })
 
     const registrations = await prisma.registration.findMany({
-      where: { idUser: id },
+      where: { idUser },
     })
+
+    const events = await Promise.all(
+      registrations.map(async (registration) => {
+        const event = await prisma.event.findUnique({
+          where: { id: registration.idEvent },
+        })
+        return event
+      }),
+    )
 
     const details = {
       user,
       registrations,
+      events,
     }
 
     if (user.length === 0) {
