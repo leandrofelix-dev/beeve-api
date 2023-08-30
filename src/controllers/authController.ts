@@ -13,7 +13,7 @@ export async function getUserDetails(req: Request, res: Response) {
       where: { idUser },
     })
 
-    const events = await Promise.all(
+    const registeredEvents = await Promise.all(
       registrations.map(async (registration) => {
         const event = await prisma.event.findUnique({
           where: { id: registration.idEvent },
@@ -24,8 +24,7 @@ export async function getUserDetails(req: Request, res: Response) {
 
     const details = {
       user,
-      registrations,
-      events,
+      registeredEvents,
     }
 
     if (user.length === 0) {
