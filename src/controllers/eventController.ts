@@ -55,7 +55,7 @@ export async function createEvent(req: Request, res: Response) {
   const maxParticipants = Number(data.maxParticipants)
   const isPublic = Boolean(data.isPublic)
 
-  const { name, idCreator, date, location, description } = data
+  const { name, idCreator, date, address, description } = data
 
   try {
     const event = await prisma.event.create({
@@ -63,7 +63,7 @@ export async function createEvent(req: Request, res: Response) {
         name,
         creator: { connect: { id: idCreator } },
         date,
-        location,
+        address,
         description,
         maxParticipants,
         isPublic,

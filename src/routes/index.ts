@@ -22,7 +22,6 @@ import { createRegistrationValidator } from '../middlewares/createRegistrationVa
 import uploadImage from '../services/firebase'
 import { createUser, deleteUser, editUser } from '../controllers/userController'
 import { createUserValidator } from '../middlewares/createUserValidator'
-import { login } from '../controllers/loginController'
 import { getUserDetails } from '../controllers/authController'
 
 const sizeInBytesToOneMegabyte: any = 1024 * 1024 * 1
@@ -35,13 +34,10 @@ const Multer = multer({
 const router = Router()
 
 export default router
-
-  // Test
   .get('/test', (req: Request, res: Response) => {
     res.status(200).json({ msg: 'Hi? the API is working!👨🏽‍🚀' })
   })
 
-  // Event
   .get('/event/code/:code', getEventByCode)
   .get('/event/:id', getEventById)
   .get('/events', getAllEvents)
@@ -55,15 +51,10 @@ export default router
   .delete('/event/:id', deleteEvent)
   .put('/event/:id', editEvent)
 
-  // User
   .post('/user', createUserValidator, createUser)
   .delete('/user/:id', deleteUser)
   .put('/user/:id', editUser)
   .get('/auth/user/:id', getUserDetails)
 
-  // Registration
   .post('/registration', createRegistrationValidator, createRegistration)
   .delete('/registration/:id', deleteRegistration)
-
-  // Login
-  .post('/login', login)

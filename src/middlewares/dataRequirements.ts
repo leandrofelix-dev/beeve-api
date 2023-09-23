@@ -16,11 +16,12 @@ export const registration = z.object({
 export const user = z.object({
   firstName: z.string().min(2).max(12),
   lastName: z.string().min(3).max(40),
-  age: z.number().min(14).max(120),
+  dateOfBirth: z.string(),
   email: z.string().email(),
   password: z.string().min(8).max(20),
   passwordConfirmation: z.string().min(8).max(20),
-  isLinkedToIfce: z.boolean(),
+  isExternal: z.boolean(),
+  studentCode: z.string().nullable(),
   course: z.string().min(2).max(40).nullable(),
-  semester: z.number().min(1).max(8).nullable(),
+  semesterOfEntry: z.string().nullable(),
 })

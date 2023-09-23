@@ -24,7 +24,7 @@ app.use(
 app.use('/api/', router)
 
 app.listen(port, () => {
-  console.log(`✨ API is started at port: ${port} ✅`)
+  console.log(`✨ API started at port: ${port} ✅`)
 })
 
 export const prisma = new PrismaClient({

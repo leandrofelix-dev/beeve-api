@@ -7,20 +7,29 @@ datasource db {
   url      = env("SQLITE_URL")
 }
 
+model Role {
+  id          String  @id @default(uuid())
+  name        String
+  description String
+  User        User?   @relation(fields: [userId], references: [id])
+  userId      String?
+}
+
 model User {
-  id             String         @id @default(uuid())
-  firstName      String
-  lastName       String
-  age            Int
-  email          String         @unique
-  password       String
-  isLinkedToIfce Boolean
-  studentCode    String?
-  course         String?
-  semester       Int?
-  profilePicUrl  String?
-  Registrations  Registration[]
-  createdEvents  Event[]
+  id              String         @id @default(uuid())
+  firstName       String
+  lastName        String
+  dateOfBirth     DateTime       @default(now())
+  email           String         @unique
+  password        String
+  profilePicUrl   String?
+  isExternal      Boolean
+  studentCode     String?
+  course          String?
+  semesterOfEntry String?
+  Registrations   Registration[]
+  createdEvents   Event[]
+  roles           Role[]
 
   @@map("users")
 }
@@ -30,14 +39,14 @@ model Event {
   name            String
   idCreator       String
   date            DateTime
-  location        String
+  address         String
   description     String
   maxParticipants Int
   eventCode       String         @unique
   isPublic        Boolean
   coverUrl        String?
-  creator         User           @relation(fields: [idCreator], references: [id])
-  Registrations   Registration[]
+  creator         User           @relation(fields: [idCreator], references: [id] )
+  Registrations   Registration[]  
 
   @@map("events")
 }
@@ -46,8 +55,8 @@ model Registration {
   id          String @id @default(uuid())
   idUser      String
   idEvent     String
-  participant User   @relation(fields: [idUser], references: [id])
-  event       Event  @relation(fields: [idEvent], references: [id])
+  participant User   @relation(fields: [idUser], references: [id] )
+  event       Event  @relation(fields: [idEvent], references: [id], onDelete: Cascade)
 
   @@map("registrations")
 }
