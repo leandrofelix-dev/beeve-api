@@ -1,6 +1,8 @@
 import { Request, Response } from 'express'
-import { prisma } from '../app'
-import Log from '../utils/logger'
+import { prisma } from '../../config/prisma'
+import Log from '../../config/logger'
+import { errorMessagesPTBR } from '../../_shared/errors-messages'
+import { responseMessagesPTBR } from '../../_shared/response'
 
 export async function createUser(req: Request, res: Response) {
   try {
@@ -20,27 +22,23 @@ export async function createUser(req: Request, res: Response) {
     } = data
 
     if (password !== passwordConfirmation)
-      throw new Error('passwords do not match')
+      throw new Error(errorMessagesPTBR['user/PASSWORD_NOT_MATCH'])
 
     if (!isExternal) {
-      if (!semesterOfEntry)
-        throw new Error('semester of entry is required to not external user')
       if (!studentCode)
-        throw new Error('student code is required to not external user')
-      if (!course) throw new Error('course is required to not external user')
+        throw new Error(errorMessagesPTBR['user/STUDENT_CODE_REQUIRED'])
 
-      if (studentCode) {
-        const alreadyExistStudentCode = await prisma.user.findFirst({
-          where: { studentCode },
-        })
+      const alreadyExistStudentCode = await prisma.user.findFirst({
+        where: { studentCode },
+      })
 
-        if (alreadyExistStudentCode)
-          throw new Error('student code already exists')
-      }
+      if (alreadyExistStudentCode)
+        throw new Error(errorMessagesPTBR['user/STUDENT_CODE_ALREADY_EXISTS'])
     }
 
     const alreadyExistEmail = await prisma.user.findFirst({ where: { email } })
-    if (alreadyExistEmail?.email) throw new Error('email already exists')
+    if (alreadyExistEmail?.email)
+      throw new Error(errorMessagesPTBR['user/EMAIL_ALREADY_EXISTS'])
 
     const user = await prisma.user.create({
       data: {
@@ -57,7 +55,9 @@ export async function createUser(req: Request, res: Response) {
       },
     })
     Log.info(`user created: ${user}`)
-    return res.status(201).json({ created: user })
+    return res
+      .status(201)
+      .json({ [responseMessagesPTBR['user/CREATED_USER']]: user })
   } catch (err: any) {
     Log.error(`error: ${err.message}`)
     return res.status(400).json({ error: err.message })

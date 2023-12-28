@@ -1,19 +1,20 @@
-import { Request, Response, NextFunction } from 'express'
-import { prisma } from '../app'
-import Log from '../utils/logger'
+import { Request, Response } from 'express'
 
-export async function createRegistration(
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) {
+import { errorMessagesPTBR } from '../../_shared/errors-messages'
+import { prisma } from '../../config/prisma'
+import Log from '../../config/logger'
+import { responseMessagesPTBR } from '../../_shared/response'
+
+export async function createRegistration(req: Request, res: Response) {
   const { idUser, idEvent } = req.body
   const isValidIdUser = await prisma.user.findUnique({ where: { id: idUser } })
   const isValidIdEvent = await prisma.event.findUnique({
     where: { id: idEvent },
   })
   if (!isValidIdUser || !isValidIdEvent) {
-    return res.status(404).json({ msg: 'invalid id' })
+    return res
+      .status(404)
+      .json({ msg: errorMessagesPTBR['registration/USER_OR_EVENT_NOT_FOUND'] })
   }
 
   const isValidIdRegistration = await prisma.registration.findFirst({
@@ -22,7 +23,7 @@ export async function createRegistration(
   if (isValidIdRegistration) {
     return res
       .status(400)
-      .json({ msg: 'user already registered in this event' })
+      .json({ msg: errorMessagesPTBR['registration/USER_ALREADY_IN_EVENT'] })
   }
 
   try {
@@ -32,7 +33,9 @@ export async function createRegistration(
         idEvent,
       },
     })
-    res.status(201).json({ msg: 'registration created' })
+    res
+      .status(201)
+      .json({ msg: responseMessagesPTBR['registration/CREATED_REGISTRATION'] })
   } catch (err: any) {
     res.status(400).json({ msg: err.errors })
     Log.error(`error: ${err.message}`)
@@ -48,7 +51,9 @@ export async function deleteRegistration(req: Request, res: Response) {
   })
 
   if (!registration) {
-    return res.status(404).json({ msg: 'registration not found' })
+    return res
+      .status(404)
+      .json({ msg: errorMessagesPTBR['registration/NOT_FOUND'] })
   }
 
   try {

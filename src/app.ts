@@ -1,49 +1,22 @@
 import express from 'express'
 import helmet from 'helmet'
-import cors from 'cors'
+import dotenv from 'dotenv'
 
-import { PrismaClient } from '@prisma/client'
+import { CORSConfig } from '../config/cors'
 
 import router from './routes'
 
-require('dotenv').config()
+dotenv.config()
 
-const port = process.env.PORT ?? 4000
+const port = process.env.PORT || 4000
 const app = express()
 
 app.use(express.json())
+app.use(CORSConfig)
 app.use(helmet())
-app.use(
-  cors({
-    origin: '*',
-    methods: ['GET', 'PUT', 'POST', 'DELETE'],
-    allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept'],
-  }),
-)
 
 app.use('/api/', router)
 
 app.listen(port, () => {
-  console.log(`✨ API started at port: ${port} ✅`)
-})
-
-export const prisma = new PrismaClient({
-  log: [
-    {
-      emit: 'event',
-      level: 'query',
-    },
-    {
-      emit: 'stdout',
-      level: 'error',
-    },
-    {
-      emit: 'stdout',
-      level: 'info',
-    },
-    {
-      emit: 'stdout',
-      level: 'warn',
-    },
-  ],
+  console.log(`API iniciada na porta ${port} 🚀`)
 })

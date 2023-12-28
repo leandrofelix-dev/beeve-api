@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 import { Request, Response, NextFunction } from 'express'
 
 import admin from 'firebase-admin'
 
-const serviceAccount = require('../../config/firebase.json')
+const serviceAccount = require('../../firebase.json')
 const bucketUrl = process.env.BUCKET_URL
 
 admin.initializeApp({
