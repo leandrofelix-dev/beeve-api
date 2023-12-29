@@ -30,7 +30,7 @@ const router = Router()
 
 export default router
   .get('/health', (req: Request, res: Response) => {
-    res.status(200).json({ msg: 'Oi? A API está online! ✅' })
+    res.status(200).json({ msg: 'Oi? A API está online! 👩🏽‍🚀' })
   })
 
   .get('/event/code/:code', getEventByCode)

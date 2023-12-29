@@ -7,18 +7,14 @@
     "node": ">=20.2.0"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "tsx watch src/app.ts",
     "lint": "eslint src --ext .ts --fix",
     "migrate": "prisma migrate dev",
-    "studio": "prisma studio",
-    "create-env": "node ./config/createEnvVariables.js",
     "build": "tsup src",
-    "start": "node dist/app.js",
-    "prod-build": "node ./config/createEnvVariables.js && tsup src"
+    "start": "node dist/app.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "leandrofelix-dev",
   "license": "ISC",
   "devDependencies": {
     "@rocketseat/eslint-config": "^2.1.0",
