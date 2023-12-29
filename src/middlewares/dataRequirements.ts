@@ -13,15 +13,18 @@ export const registration = z.object({
   idUser: z.string().uuid(),
 })
 
-export const user = z.object({
-  firstName: z.string().min(2).max(12),
-  lastName: z.string().min(3).max(40),
-  dateOfBirth: z.string(),
-  email: z.string().email(),
-  password: z.string().min(8).max(20),
-  passwordConfirmation: z.string().min(8).max(20),
-  isExternal: z.boolean(),
-  studentCode: z.string().nullable(),
-  course: z.string().min(2).max(40).nullable(),
-  semesterOfEntry: z.string().nullable(),
-})
+export const user = z
+  .object({
+    fullName: z.string().min(10).max(100),
+    dateOfBirth: z.string(),
+    email: z.string().email(),
+    password: z.string().min(8).max(20),
+    passwordConfirmation: z.string().min(8).max(20),
+    isExternal: z.boolean(),
+    institutionalCode: z.string().nullable(),
+  })
+  .refine(
+    (data) =>
+      (data.isExternal && data.institutionalCode == null) ||
+      (!data.isExternal && data.institutionalCode != null),
+  )

@@ -8,33 +8,32 @@ export async function createUser(req: Request, res: Response) {
   try {
     const data = req.body
     const {
-      firstName,
-      lastName,
+      fullName,
+      dateOfBirth,
       email,
       password,
       passwordConfirmation,
       profilePicUrl,
       isExternal,
-      studentCode,
-      course,
-      dateOfBirth,
-      semesterOfEntry,
+      institutionalCode,
     } = data
 
     if (password !== passwordConfirmation)
       throw new Error(errorMessagesPTBR['user/PASSWORD_NOT_MATCH'])
 
-    if (!isExternal) {
-      if (!studentCode)
-        throw new Error(errorMessagesPTBR['user/STUDENT_CODE_REQUIRED'])
+    const passwordHash = password
 
-      const alreadyExistStudentCode = await prisma.user.findFirst({
-        where: { studentCode },
-      })
+    // if (!isExternal) {
+    //   if (!institutionalCode)
+    //     throw new Error(errorMessagesPTBR['user/STUDENT_CODE_REQUIRED'])
 
-      if (alreadyExistStudentCode)
-        throw new Error(errorMessagesPTBR['user/STUDENT_CODE_ALREADY_EXISTS'])
-    }
+    //   const alreadyExistInstitutionalCode = await prisma.user.findFirst({
+    //     where: { institutionalCode },
+    //   })
+
+    //   if (alreadyExistInstitutionalCode)
+    //     throw new Error(errorMessagesPTBR['user/STUDENT_CODE_ALREADY_EXISTS'])
+    // }
 
     const alreadyExistEmail = await prisma.user.findFirst({ where: { email } })
     if (alreadyExistEmail?.email)
@@ -42,15 +41,12 @@ export async function createUser(req: Request, res: Response) {
 
     const user = await prisma.user.create({
       data: {
-        firstName,
-        lastName,
+        fullName,
         email,
-        password,
+        passwordHash,
         isExternal,
         profilePicUrl,
-        studentCode,
-        course,
-        semesterOfEntry,
+        institutionalCode,
         dateOfBirth: new Date(dateOfBirth),
       },
     })
