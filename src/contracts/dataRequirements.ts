@@ -1,5 +1,10 @@
 import { z } from 'zod'
 
+export const auth = z.object({
+  email: z.string().email(),
+  password: z.string().min(8).max(20),
+})
+
 export const event = z.object({
   name: z.string().min(5).max(50),
   address: z.string().min(10).max(100),

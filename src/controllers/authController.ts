@@ -18,9 +18,7 @@ export async function createToken(req: Request, res: Response) {
     if (!passwordMatch) {
       return res.status(401).json({ error: 'Invalid username or password' })
     }
-    const token = jwt.sign({ userId: user.id }, String(secret), {
-      expiresIn: '1h',
-    })
+    const token = jwt.sign({ userId: user.id }, String(secret))
 
     res.json({ token })
   } catch (error) {

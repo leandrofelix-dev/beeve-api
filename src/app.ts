@@ -1,7 +1,6 @@
 import express from 'express'
 import helmet from 'helmet'
 import dotenv from 'dotenv'
-
 import { CORSConfig } from '../config/cors'
 
 import router from './routes'
@@ -18,5 +17,5 @@ app.use(helmet())
 app.use('/api/', router)
 
 app.listen(port, () => {
-  console.log(`API iniciada na porta ${port} 🚀`)
+  console.info(`API iniciada na porta ${port} 🚀`)
 })

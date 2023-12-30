@@ -14,16 +14,19 @@ import {
   deleteRegistration,
 } from './controllers/registrationController'
 import { createUser, deleteUser, editUser } from './controllers/userController'
-import { createEventValidator } from './middlewares/createEventValidator'
-import { createRegistrationValidator } from './middlewares/createRegistrationValidator'
-import { createUserValidator } from './middlewares/createUserValidator'
-import uploadImage from './services/firebase'
+import {
+  createEventValidator,
+  createRegistrationValidator,
+  createUserValidator,
+  authValidator,
+} from './middlewares/validateMiddleware'
 import { createToken } from './controllers/authController'
 import { authenticate } from './middlewares/authMiddleware'
+import uploadImage from './services/firebase'
 
 const sizeInBytesToOneMegabyte = 1024 * 1024 * 1
 
-const Multer = multer({
+const upload = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: sizeInBytesToOneMegabyte },
 })
@@ -35,14 +38,13 @@ export default router
     res.status(200).json({ msg: 'Oi? A API está online! 👩🏽‍🚀' })
   })
 
-  .post('/auth', createToken)
-
+  .post('/auth', authValidator, createToken)
   .get('/event/code/:code', getEventByCode)
   .get('/event/:id', authenticate, getEventById)
   .get('/events', getAllEvents)
   .post(
     '/event',
-    Multer.single('coverImage'),
+    upload.single('coverImage'),
     uploadImage,
     createEventValidator,
     createEvent,

@@ -4,8 +4,9 @@ import Log from '../../config/logger'
 import bcrypt from 'bcrypt'
 import { errorMessagesPTBR } from '../../_shared/errors-messages'
 import { responseMessagesPTBR } from '../../_shared/response'
+import { AuthenticatedRequest } from '../middlewares/authMiddleware'
 
-export async function createUser(req: Request, res: Response) {
+export async function createUser(req: AuthenticatedRequest, res: Response) {
   try {
     const data = req.body
     const {
@@ -56,7 +57,7 @@ export async function createUser(req: Request, res: Response) {
   }
 }
 
-export async function deleteUser(req: Request, res: Response) {
+export async function deleteUser(req: AuthenticatedRequest, res: Response) {
   try {
     const id = req.params.id
     const user = await prisma.user.findUnique({
@@ -75,7 +76,7 @@ export async function deleteUser(req: Request, res: Response) {
   }
 }
 
-export async function editUser(req: Request, res: Response) {
+export async function editUser(req: AuthenticatedRequest, res: Response) {
   try {
     const id = req.params.id
     const data = req.body
