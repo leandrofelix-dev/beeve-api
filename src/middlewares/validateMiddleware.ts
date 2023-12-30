@@ -1,5 +1,8 @@
 import { Request, Response, NextFunction } from 'express'
-import { auth, user, registration, event } from '../contracts/dataRequirements'
+import { auth } from '../contracts/authContract'
+import { subscription } from '../contracts/subscriptionContract'
+import { user } from '../contracts/userContract'
+import { event } from '../contracts/eventContract'
 
 export function authValidator(req: Request, res: Response, next: NextFunction) {
   const { body } = req
@@ -25,14 +28,14 @@ export function createUserValidator(
   }
 }
 
-export async function createRegistrationValidator(
+export async function createSubscriptionValidator(
   req: Request,
   res: Response,
   next: NextFunction,
 ) {
   const { body } = req
   try {
-    registration.parse(body)
+    subscription.parse(body)
     next()
   } catch (err: any) {
     res.status(400).json({ msg: err.errors })

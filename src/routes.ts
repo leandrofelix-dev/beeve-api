@@ -16,7 +16,7 @@ import {
 import { createUser, deleteUser, editUser } from './controllers/userController'
 import {
   createEventValidator,
-  createRegistrationValidator,
+  createSubscriptionValidator,
   createUserValidator,
   authValidator,
 } from './middlewares/validateMiddleware'
@@ -59,7 +59,7 @@ export default router
   .post(
     '/registration',
     authenticate,
-    createRegistrationValidator,
+    createSubscriptionValidator,
     createRegistration,
   )
   .delete('/registration/:id', authenticate, deleteRegistration)
