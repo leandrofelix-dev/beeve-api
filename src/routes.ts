@@ -18,6 +18,7 @@ import { createEventValidator } from './middlewares/createEventValidator'
 import { createRegistrationValidator } from './middlewares/createRegistrationValidator'
 import { createUserValidator } from './middlewares/createUserValidator'
 import uploadImage from './services/firebase'
+import { createToken } from './controllers/authController'
 
 const sizeInBytesToOneMegabyte = 1024 * 1024 * 1
 
@@ -32,6 +33,8 @@ export default router
   .get('/health', (req: Request, res: Response) => {
     res.status(200).json({ msg: 'Oi? A API está online! 👩🏽‍🚀' })
   })
+
+  .post('/auth', createToken)
 
   .get('/event/code/:code', getEventByCode)
   .get('/event/:id', getEventById)
