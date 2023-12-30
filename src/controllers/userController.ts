@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import { prisma } from '../../config/prisma'
 import Log from '../../config/logger'
+import bcrypt from 'bcrypt'
 import { errorMessagesPTBR } from '../../_shared/errors-messages'
 import { responseMessagesPTBR } from '../../_shared/response'
 
@@ -21,19 +22,14 @@ export async function createUser(req: Request, res: Response) {
     if (password !== passwordConfirmation)
       throw new Error(errorMessagesPTBR['user/PASSWORD_NOT_MATCH'])
 
-    const passwordHash = password
+    const passwordHash = await bcrypt.hash(password, 10)
 
-    // if (!isExternal) {
-    //   if (!institutionalCode)
-    //     throw new Error(errorMessagesPTBR['user/STUDENT_CODE_REQUIRED'])
+    const alreadyExistInstitutionalCode = await prisma.user.findFirst({
+      where: { institutionalCode },
+    })
 
-    //   const alreadyExistInstitutionalCode = await prisma.user.findFirst({
-    //     where: { institutionalCode },
-    //   })
-
-    //   if (alreadyExistInstitutionalCode)
-    //     throw new Error(errorMessagesPTBR['user/STUDENT_CODE_ALREADY_EXISTS'])
-    // }
+    if (alreadyExistInstitutionalCode)
+      throw new Error(errorMessagesPTBR['user/STUDENT_CODE_ALREADY_EXISTS'])
 
     const alreadyExistEmail = await prisma.user.findFirst({ where: { email } })
     if (alreadyExistEmail?.email)
