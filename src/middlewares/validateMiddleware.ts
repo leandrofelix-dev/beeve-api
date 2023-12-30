@@ -51,7 +51,7 @@ export function createEventValidator(
   try {
     event.parse(body)
     next()
-  } catch (err: any) {
+  } catch (err: Error | any) {
     res.status(400).json({ msg: err.errors })
   }
 }

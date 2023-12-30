@@ -4,8 +4,11 @@ import dotenv from 'dotenv'
 import { CORSConfig } from '../config/cors'
 
 import router from './routes'
+import { connectToDatabase } from '../config/prisma'
 
 dotenv.config()
+
+connectToDatabase()
 
 const port = process.env.PORT || 4000
 const app = express()

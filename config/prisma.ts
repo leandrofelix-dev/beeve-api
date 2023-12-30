@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client'
+import { errorMessagesPTBR } from '../_shared/errors-messages'
 
 export const prisma = new PrismaClient({
   log: [
@@ -20,3 +21,12 @@ export const prisma = new PrismaClient({
     },
   ],
 })
+
+export async function connectToDatabase() {
+  try {
+    await prisma.$connect()
+    console.info('Conectado ao postgresSQL 🐘')
+  } catch (error) {
+    console.error(errorMessagesPTBR['config/DB_CONN_ERROR'], error)
+  }
+}

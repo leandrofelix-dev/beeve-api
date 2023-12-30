@@ -1,4 +1,5 @@
 export const errorMessagesPTBR = {
+  'config/DB_CONN_ERROR': 'Não foi possível conectar ao banco de dados.',
   'event/INVALID_EVENT_CODE': 'Código de evento inválido.',
   'event/INVALID_EVENT_ID': 'Id de evento inválido.',
   'registration/NOT_FOUND': 'Inscrição não encontrada.',
