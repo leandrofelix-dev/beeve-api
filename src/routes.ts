@@ -19,6 +19,7 @@ import { createRegistrationValidator } from './middlewares/createRegistrationVal
 import { createUserValidator } from './middlewares/createUserValidator'
 import uploadImage from './services/firebase'
 import { createToken } from './controllers/authController'
+import { authenticate } from './middlewares/authMiddleware'
 
 const sizeInBytesToOneMegabyte = 1024 * 1024 * 1
 
@@ -37,7 +38,7 @@ export default router
   .post('/auth', createToken)
 
   .get('/event/code/:code', getEventByCode)
-  .get('/event/:id', getEventById)
+  .get('/event/:id', authenticate, getEventById)
   .get('/events', getAllEvents)
   .post(
     '/event',
@@ -49,9 +50,14 @@ export default router
   .delete('/event/:id', deleteEvent)
   .put('/event/:id', editEvent)
 
-  .post('/user', createUserValidator, createUser)
-  .delete('/user/:id', deleteUser)
-  .put('/user/:id', editUser)
+  .post('/user', authenticate, createUserValidator, createUser)
+  .delete('/user/:id', authenticate, deleteUser)
+  .put('/user/:id', authenticate, editUser)
 
-  .post('/registration', createRegistrationValidator, createRegistration)
-  .delete('/registration/:id', deleteRegistration)
+  .post(
+    '/registration',
+    authenticate,
+    createRegistrationValidator,
+    createRegistration,
+  )
+  .delete('/registration/:id', authenticate, deleteRegistration)
