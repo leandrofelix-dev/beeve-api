@@ -15,8 +15,8 @@ import {
 } from './controllers/registrationController'
 import {
   createUserController,
-  deleteUser,
-  editUser,
+  deleteUserController,
+  editUserController,
 } from './controllers/userController'
 import {
   createEventValidator,
@@ -57,8 +57,8 @@ export default router
   .put('/event/:id', editEvent)
 
   .post('/user', authenticate, createUserValidator, createUserController)
-  .delete('/user/:id', authenticate, deleteUser)
-  .put('/user/:id', authenticate, editUser)
+  .delete('/user/:id', authenticate, deleteUserController)
+  .put('/user/:id', authenticate, editUserController)
 
   .post(
     '/registration',

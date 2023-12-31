@@ -1,10 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Response } from 'express'
-import { prisma } from '../../config/prisma'
-import Log from '../../config/logger'
 import { responseMessagesPTBR } from '../../_shared/response'
 import { AuthenticatedRequest } from '../middlewares/authMiddleware'
-import { createUserUseCase } from '../usecases/userUseCase'
+import {
+  createUserUseCase,
+  deleteUserUseCase,
+  editUserUseCase,
+} from '../usecases/userUseCase'
 
 export async function createUserController(
   req: AuthenticatedRequest,
@@ -12,7 +14,7 @@ export async function createUserController(
 ) {
   try {
     const data = req.body
-    const createdUser = await createUserUseCase(req, res, data)
+    const createdUser = await createUserUseCase(req, data)
 
     return res
       .status(201)
@@ -22,40 +24,33 @@ export async function createUserController(
   }
 }
 
-export async function deleteUser(req: AuthenticatedRequest, res: Response) {
+export async function deleteUserController(
+  req: AuthenticatedRequest,
+  res: Response,
+) {
   try {
     const id = req.params.id
-    const user = await prisma.user.findUnique({
-      where: {
-        id,
-      },
-    })
-    if (!user) throw new Error('user not found')
+    await deleteUserUseCase(id)
 
-    const deletedUser = await prisma.user.delete({ where: { id } })
-    Log.info(`user ${id} was be deleted`)
-    return res.status(201).json({ deleted: deletedUser })
+    return res.status(201).json([responseMessagesPTBR['user/DELETED_USER']])
   } catch (err: any) {
-    Log.error(`error: ${err.message}`)
     return res.status(400).json({ error: err.message })
   }
 }
 
-export async function editUser(req: AuthenticatedRequest, res: Response) {
+export async function editUserController(
+  req: AuthenticatedRequest,
+  res: Response,
+) {
   try {
     const id = req.params.id
     const data = req.body
 
-    const user = await prisma.user.findUnique({ where: { id } })
-
-    if (!user) throw new Error('user not found')
-
-    const updatedUser = await prisma.user.update({ where: { id }, data })
-
-    Log.info(`user ${id} was be updated`)
-    return res.status(200).json({ updated: updatedUser })
+    const editedUser = await editUserUseCase(id, data)
+    return res
+      .status(201)
+      .json({ [responseMessagesPTBR['user/UPDATED_USER']]: editedUser })
   } catch (err: any) {
-    Log.error(`error: ${err.message}`)
     return res.status(400).json({ error: err.message })
   }
 }

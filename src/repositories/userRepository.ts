@@ -2,7 +2,7 @@ import { User } from '@prisma/client'
 import { prisma } from '../../config/prisma'
 
 export async function createUserRepository(data: Omit<User, 'id'>) {
-  const user = await prisma.user.create({
+  return await prisma.user.create({
     data: {
       fullName: data.fullName,
       email: data.email,
@@ -13,5 +13,13 @@ export async function createUserRepository(data: Omit<User, 'id'>) {
       dateOfBirth: data.dateOfBirth,
     },
   })
-  return user
+}
+export async function deleteUserRepository(id: string) {
+  await prisma.user.delete({ where: { id } })
+}
+export async function editUserRepository(user: User, data: Omit<User, 'id'>) {
+  return await prisma.user.update({ where: { id: user.id }, data })
+}
+export async function getUserById(id: string) {
+  return await prisma.user.findUnique({ where: { id } })
 }

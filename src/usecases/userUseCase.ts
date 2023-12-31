@@ -1,14 +1,18 @@
 import { prisma } from '../../config/prisma'
 import { AuthenticatedRequest } from '../middlewares/authMiddleware'
-import { Response } from 'express'
-import bcrypt from 'bcrypt'
 import { errorMessagesPTBR } from '../../_shared/errors-messages'
 import { UserCreateDTO } from '../models/userDTO'
-import { createUserRepository } from '../repositories/userRepository'
+import {
+  createUserRepository,
+  deleteUserRepository,
+  editUserRepository,
+  getUserById,
+} from '../repositories/userRepository'
+import bcrypt from 'bcrypt'
+import { User } from '@prisma/client'
 
 export async function createUserUseCase(
   req: AuthenticatedRequest,
-  res: Response,
   data: UserCreateDTO,
 ) {
   const {
@@ -47,4 +51,19 @@ export async function createUserUseCase(
     institutionalCode,
     dateOfBirth,
   })
+}
+
+export async function deleteUserUseCase(id: string) {
+  const user = getUserById(id)
+  if (!user) throw new Error('user not found')
+
+  return deleteUserRepository(id)
+}
+
+export async function editUserUseCase(id: string, data: User) {
+  const user = await getUserById(id)
+
+  if (!user) throw new Error('user not found')
+
+  return editUserRepository(user, data)
 }
