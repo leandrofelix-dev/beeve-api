@@ -19,7 +19,7 @@ export async function createUserController(
 
     return res
       .status(201)
-      .json({ [responseMessagesPTBR['user/CREATED_USER']]: createdUser })
+      .json({ [responseMessagesPTBR['user/CREATED']]: createdUser })
   } catch (err: any) {
     return res.status(400).json({ error: err.message })
   }
@@ -33,7 +33,7 @@ export async function deleteUserController(
     const id = req.params.id
     await deleteUserUseCase(id)
 
-    return res.status(201).json([responseMessagesPTBR['user/DELETED_USER']])
+    return res.status(201).json([responseMessagesPTBR['user/DELETED']])
   } catch (err: any) {
     return res.status(400).json({ error: err.message })
   }
@@ -50,7 +50,7 @@ export async function editUserController(
     const editedUser = await editUserUseCase(id, data)
     return res
       .status(201)
-      .json({ [responseMessagesPTBR['user/UPDATED_USER']]: editedUser })
+      .json({ [responseMessagesPTBR['user/UPDATED']]: editedUser })
   } catch (err: any) {
     return res.status(400).json({ error: err.message })
   }

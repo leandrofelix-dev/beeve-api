@@ -1,6 +1,12 @@
 export const responseMessagesPTBR = {
-  'registration/CREATED_REGISTRATION': 'Inscrição realizada com sucesso.',
-  'user/CREATED_USER': 'Usuário criado com sucesso.',
-  'user/DELETED_USER': 'Usuário excluído com sucesso.',
-  'user/UPDATED_USER': 'Usuário atualizado com sucesso.',
+  'subscription/CREATED': 'Inscrição realizada com sucesso.',
+  'subscription/DELETED': 'Inscrição excluída com sucesso.',
+
+  'user/CREATED': 'Usuário criado com sucesso.',
+  'user/DELETED': 'Usuário excluído com sucesso.',
+  'user/UPDATED': 'Usuário atualizado com sucesso.',
+
+  'event/CREATED': 'Evento criado com sucesso.',
+  'event/DELETED': 'Evento excluído com sucesso.',
+  'event/UPDATED': 'Evento atualizado com sucesso.',
 }

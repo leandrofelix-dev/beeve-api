@@ -10,7 +10,7 @@ import {
   editEvent,
 } from './controllers/eventController'
 import {
-  createRegistration,
+  createSubscription,
   deleteRegistration,
 } from './controllers/registrationController'
 import {
@@ -42,8 +42,9 @@ export default router
   .get('/health', (req: Request, res: Response) => {
     res.status(200).json({ msg: 'Oi? A API está online! 👩🏽‍🚀' })
   })
-
   .post('/auth', authValidator, createToken)
+
+  // @Event
   .get('/event/code/:code', getEventByCode)
   .get('/event/:id', authenticate, getEventById)
   .get('/events', getAllEvents)
@@ -57,15 +58,17 @@ export default router
   .delete('/event/:id', deleteEvent)
   .put('/event/:id', editEvent)
 
+  // @User
   .get('/user/:id', authenticate, getUserController)
   .post('/user', authenticate, createUserValidator, createUserController)
   .delete('/user/:id', authenticate, deleteUserController)
   .put('/user/:id', authenticate, editUserController)
 
+  // @Subscription
   .post(
-    '/registration',
+    '/subscription',
     authenticate,
     createSubscriptionValidator,
-    createRegistration,
+    createSubscription,
   )
-  .delete('/registration/:id', authenticate, deleteRegistration)
+  .delete('/subscription/:id', authenticate, deleteRegistration)
