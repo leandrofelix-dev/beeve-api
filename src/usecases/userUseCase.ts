@@ -67,3 +67,7 @@ export async function editUserUseCase(id: string, data: User) {
 
   return editUserRepository(user, data)
 }
+
+export async function getUserUseCase(id: string) {
+  return getUserById(id)
+}

@@ -6,6 +6,7 @@ import {
   createUserUseCase,
   deleteUserUseCase,
   editUserUseCase,
+  getUserUseCase,
 } from '../usecases/userUseCase'
 
 export async function createUserController(
@@ -50,6 +51,20 @@ export async function editUserController(
     return res
       .status(201)
       .json({ [responseMessagesPTBR['user/UPDATED_USER']]: editedUser })
+  } catch (err: any) {
+    return res.status(400).json({ error: err.message })
+  }
+}
+
+export async function getUserController(
+  req: AuthenticatedRequest,
+  res: Response,
+) {
+  try {
+    const id = req.params.id
+    const user = await getUserUseCase(id)
+
+    return res.status(201).json(user)
   } catch (err: any) {
     return res.status(400).json({ error: err.message })
   }
