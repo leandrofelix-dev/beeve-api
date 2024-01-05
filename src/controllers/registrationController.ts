@@ -1,38 +1,40 @@
-import { Request, Response, NextFunction } from 'express'
-import { prisma } from '../app'
-import Log from '../utils/logger'
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Request, Response } from 'express'
 
-export async function createRegistration(
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) {
+import { errorMessagesPTBR } from '../../_shared/errors-messages'
+import { prisma } from '../../config/prisma'
+import Log from '../../config/logger'
+import { responseMessagesPTBR } from '../../_shared/response'
+
+export async function createSubscription(req: Request, res: Response) {
   const { idUser, idEvent } = req.body
   const isValidIdUser = await prisma.user.findUnique({ where: { id: idUser } })
   const isValidIdEvent = await prisma.event.findUnique({
     where: { id: idEvent },
   })
   if (!isValidIdUser || !isValidIdEvent) {
-    return res.status(404).json({ msg: 'invalid id' })
+    return res
+      .status(404)
+      .json({ msg: errorMessagesPTBR['subscription/USER_OR_EVENT_NOT_FOUND'] })
   }
 
-  const isValidIdRegistration = await prisma.registration.findFirst({
+  const isValidIdRegistration = await prisma.subscription.findFirst({
     where: { idUser, idEvent },
   })
   if (isValidIdRegistration) {
     return res
       .status(400)
-      .json({ msg: 'user already registered in this event' })
+      .json({ msg: errorMessagesPTBR['subscription/USER_ALREADY_IN_EVENT'] })
   }
 
   try {
-    await prisma.registration.create({
+    await prisma.subscription.create({
       data: {
         idUser,
         idEvent,
       },
     })
-    res.status(201).json({ msg: 'registration created' })
+    res.status(201).json({ msg: responseMessagesPTBR['subscription/CREATED'] })
   } catch (err: any) {
     res.status(400).json({ msg: err.errors })
     Log.error(`error: ${err.message}`)
@@ -41,18 +43,20 @@ export async function createRegistration(
 
 export async function deleteRegistration(req: Request, res: Response) {
   const id = req.params.id
-  const registration = await prisma.registration.findUnique({
+  const registration = await prisma.subscription.findUnique({
     where: {
       id,
     },
   })
 
   if (!registration) {
-    return res.status(404).json({ msg: 'registration not found' })
+    return res
+      .status(404)
+      .json({ msg: errorMessagesPTBR['subscription/NOT_FOUND'] })
   }
 
   try {
-    const deletedRegistration = await prisma.registration.delete({
+    const deletedRegistration = await prisma.subscription.delete({
       where: {
         id,
       },
