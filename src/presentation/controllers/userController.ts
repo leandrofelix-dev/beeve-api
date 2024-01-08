@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Response } from 'express'
-import { responseMessagesPTBR } from '../../_shared/response'
+import { responseMessagesPTBR } from '../../../_shared/response'
 import { AuthenticatedRequest } from '../middlewares/authMiddleware'
 import {
   createUserUseCase,
   deleteUserUseCase,
   editUserUseCase,
   getUserUseCase,
-} from '../usecases/userUseCase'
+} from '../../data/usecases/userUseCase'
 
 export async function createUserController(
   req: AuthenticatedRequest,

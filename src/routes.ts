@@ -8,26 +8,26 @@ import {
   createEvent,
   deleteEvent,
   editEvent,
-} from './controllers/eventController'
+} from './presentation/controllers/eventController'
 import {
   createSubscription,
   deleteRegistration,
-} from './controllers/registrationController'
+} from './presentation/controllers/registrationController'
 import {
   createUserController,
   deleteUserController,
   editUserController,
   getUserController,
-} from './controllers/userController'
+} from './presentation/controllers/userController'
 import {
   createEventValidator,
   createSubscriptionValidator,
   createUserValidator,
   authValidator,
-} from './middlewares/validateMiddleware'
-import { createToken } from './controllers/authController'
-import { authenticate } from './middlewares/authMiddleware'
-import uploadImage from './services/firebase'
+} from './presentation/middlewares/validateMiddleware'
+import { createToken } from './presentation/controllers/authController'
+import { authenticate } from './presentation/middlewares/authMiddleware'
+import uploadImage from './infra/services/firebase'
 
 const sizeInBytesToOneMegabyte = 1024 * 1024 * 1
 

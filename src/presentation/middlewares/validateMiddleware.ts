@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Request, Response, NextFunction } from 'express'
-import { auth } from '../contracts/authContract'
-import { subscription } from '../contracts/subscriptionContract'
-import { user } from '../contracts/userContract'
-import { event } from '../contracts/eventContract'
+import { auth } from '../../domain/contracts/authContract'
+import { subscription } from '../../domain/contracts/subscriptionContract'
+import { user } from '../../domain/contracts/userContract'
+import { event } from '../../domain/contracts/eventContract'
 
 export function authValidator(req: Request, res: Response, next: NextFunction) {
   const { body } = req

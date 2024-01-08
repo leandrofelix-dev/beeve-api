@@ -1,13 +1,13 @@
-import { prisma } from '../../config/prisma'
-import { AuthenticatedRequest } from '../middlewares/authMiddleware'
-import { errorMessagesPTBR } from '../../_shared/errors-messages'
-import { UserCreateDTO } from '../models/userDTO'
+import { prisma } from '../../../config/prisma'
+import { AuthenticatedRequest } from '../../presentation/middlewares/authMiddleware'
+import { errorMessagesPTBR } from '../../../_shared/errors-messages'
+import { UserCreateDTO } from '../../domain/models/userDTO'
 import {
   createUserRepository,
   deleteUserRepository,
   editUserRepository,
   getUserById,
-} from '../repositories/userRepository'
+} from '../../infra/repositories/userRepository'
 import bcrypt from 'bcrypt'
 import { User } from '@prisma/client'
 

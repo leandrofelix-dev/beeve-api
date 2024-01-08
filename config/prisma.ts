@@ -1,26 +1,14 @@
 import { PrismaClient } from '@prisma/client'
 import { errorMessagesPTBR } from '../_shared/errors-messages'
 
-export const prisma = new PrismaClient({
-  log: [
-    {
-      emit: 'event',
-      level: 'query',
-    },
-    {
-      emit: 'stdout',
-      level: 'error',
-    },
-    {
-      emit: 'stdout',
-      level: 'info',
-    },
-    {
-      emit: 'stdout',
-      level: 'warn',
-    },
-  ],
-})
+export const prisma = new PrismaClient(
+  process.env.NODE_ENV === 'production'
+    ? {
+        log: ['query', 'info', 'warn'],
+        errorFormat: 'pretty',
+      }
+    : undefined,
+)
 
 export async function connectToDatabase() {
   try {
