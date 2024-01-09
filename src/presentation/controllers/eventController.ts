@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { prisma } from '../../../config/prisma'
-import { generateCode } from '../../utils/createEventCode'
+import { generateCode } from '../../data/utils/createEventCode'
 import Log from '../../../config/logger'
 
 export async function getEventByCode(req: Request, res: Response) {
