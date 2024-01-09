@@ -5,5 +5,5 @@ export const event = z.object({
   address: z.string().min(10).max(100),
   description: z.string().min(20).max(280),
   maxParticipants: z.string().min(1),
-  date: z.string().datetime(),
+  // date: z.string().datetime(),
 })

@@ -7,6 +7,7 @@ import { routerEvent } from './presentation/routers/eventRoutes'
 import { routerSubscriptions } from './presentation/routers/subscriptionRoutes'
 
 const router = Router()
+
 router
   .get('/health', (req: Request, res: Response) => {
     res.status(200).json({ msg: 'Oi? A API está online! 👩🏽‍🚀' })

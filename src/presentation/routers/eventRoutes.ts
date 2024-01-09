@@ -8,8 +8,8 @@ import {
   editEvent,
 } from '../controllers/eventController'
 import { authenticate } from '../middlewares/authMiddleware'
-// import { upload } from '../middlewares/uploadFile'
 import { createEventValidator } from '../middlewares/validateMiddleware'
+import { upload } from '../middlewares/uploadMiddleware'
 
 export function routerEvent(router: Router) {
   router
@@ -19,7 +19,7 @@ export function routerEvent(router: Router) {
     .post(
       '/event',
       authenticate,
-      // upload.single('cover'),
+      upload.single('file'),
       createEventValidator,
       createEvent,
     )
