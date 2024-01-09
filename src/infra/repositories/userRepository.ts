@@ -1,5 +1,5 @@
 import { User } from '@prisma/client'
-import { prisma } from '../../config/prisma'
+import { prisma } from '../../../config/prisma'
 
 export async function createUserRepository(data: Omit<User, 'id'>) {
   return await prisma.user.create({

@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Request, Response } from 'express'
 
-import { errorMessagesPTBR } from '../../_shared/errors-messages'
-import { prisma } from '../../config/prisma'
-import Log from '../../config/logger'
-import { responseMessagesPTBR } from '../../_shared/response'
+import { errorMessagesPTBR } from '../../../_shared/errors-messages'
+import { prisma } from '../../../config/prisma'
+import Log from '../../../config/logger'
+import { responseMessagesPTBR } from '../../../_shared/response'
 
 export async function createSubscription(req: Request, res: Response) {
   const { idUser, idEvent } = req.body

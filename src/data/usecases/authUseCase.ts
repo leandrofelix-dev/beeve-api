@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
-import { findUserByEmail } from '../repositories/authRepository'
+import { findUserByEmail } from '../../infra/repositories/authRepository'
 
 export async function authUseCase(
   email: string,

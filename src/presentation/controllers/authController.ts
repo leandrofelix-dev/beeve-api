@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import dotenv from 'dotenv'
-import { authUseCase } from '../usecases/authUseCase'
+import { authUseCase } from '../../data/usecases/authUseCase'
 dotenv.config()
 
 export async function createToken(req: Request, res: Response) {
