@@ -25,7 +25,7 @@ export function createUserValidator(
     user.parse(body)
     next()
   } catch (err: any) {
-    res.status(400).json({ msg: err.errors })
+    res.status(400).json({ err: err.message })
   }
 }
 
@@ -37,7 +37,7 @@ export async function createSubscriptionValidator(
   const { body } = req
   try {
     subscription.parse(body)
-    next()
+    next(body)
   } catch (err: any) {
     res.status(400).json({ msg: err.errors })
   }
@@ -48,11 +48,11 @@ export function createEventValidator(
   res: Response,
   next: NextFunction,
 ) {
-  const { body } = req
+  const data = req.body
   try {
-    event.parse(body)
+    event.parse(data)
     next()
-  } catch (err: Error | any) {
+  } catch (err: any) {
     res.status(400).json({ msg: err.errors })
   }
 }

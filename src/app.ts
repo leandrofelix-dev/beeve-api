@@ -5,10 +5,9 @@ import { CORSConfig } from '../config/cors'
 
 import router from './routes'
 import { connectToDatabase } from '../config/prisma'
+import { connectToSupabase } from '../config/supa'
 
 dotenv.config()
-
-connectToDatabase()
 
 const port = process.env.PORT || 4000
 const app = express()
@@ -22,3 +21,6 @@ app.use('/api/', router)
 app.listen(port, () => {
   console.info(`API iniciada na porta ${port} 🚀`)
 })
+
+connectToDatabase()
+connectToSupabase()

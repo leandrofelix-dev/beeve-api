@@ -1,7 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { Request, Response } from 'express'
 import { prisma } from '../../../config/prisma'
 import { generateCode } from '../../data/utils/createEventCode'
 import Log from '../../../config/logger'
+import { AuthenticatedRequest } from '../middlewares/authMiddleware'
+// import { createEventValidator } from '../middlewares/validateMiddleware'
+import { UserLogged } from '../../../_shared/types'
 
 export async function getEventByCode(req: Request, res: Response) {
   const eventCode = req.params.code
@@ -9,9 +14,10 @@ export async function getEventByCode(req: Request, res: Response) {
     const event = await prisma.event.findMany({
       where: { eventCode },
     })
-    if (event.length === 0) {
+
+    if (event.length === 0)
       return res.status(404).json({ error: 'invalid event code' })
-    }
+
     return res.status(200).json(event)
   } catch (err: any) {
     Log.error(`error: ${err.message}`)
@@ -45,36 +51,43 @@ export async function getAllEvents(req: Request, res: Response) {
   }
 }
 
-export async function createEvent(req: Request, res: Response) {
-  const data = req.body
-
-  const eventCode: string = generateCode()
-  const firebaseUrl = data.coverUrl
-  const coverUrl = firebaseUrl
-
-  const maxParticipants = Number(data.maxParticipants)
-  const isPublic = Boolean(data.isPublic)
-
-  const { name, idCreator, date, address, description } = data
-
+export async function createEventController(
+  req: AuthenticatedRequest,
+  res: Response,
+) {
   try {
+    const { body } = req
+    const { user } = req as UserLogged
+    const { name, dateTime, location, description } = body
+    const maxParticipants = Number(body.maxParticipants)
+    const isPublic = Boolean(body.isPublic)
+    const eventCode: string = await generateCode()
+
+    const findUserById = await prisma.user.findUnique({
+      where: { id: '77502e89-1904-4f51-baf0-654fc7fedc0d' },
+    })
+    console.log(user.userId)
+    if (!findUserById) {
+      return res.status(404).json({ error: 'Usuário não encontrado' })
+    }
+
     const event = await prisma.event.create({
       data: {
-        name,
-        creator: { connect: { id: idCreator } },
-        date,
-        address,
-        description,
-        maxParticipants,
-        isPublic,
-        eventCode,
-        coverUrl,
+        creator: { connect: { id: '77502e89-1904-4f51-baf0-654fc7fedc0d' } },
+        name: 'name here teste',
+        dateTime: new Date(),
+        location: 'location here teste',
+        description: 'description here teste',
+        maxParticipants: 10,
+        eventCode: '12312312312',
+        isPublic: true,
       },
     })
-    Log.info(`event created: ${eventCode}`)
-    return res.status(201).json(event)
-  } catch (err: any) {
-    Log.error(`error: ${err.message}`)
+
+    return res.status(201).json({ event })
+  } catch (error: any) {
+    // Log.error(`error: ${error.message}`)
+    return res.status(500).json(error.message)
   }
 }
 
