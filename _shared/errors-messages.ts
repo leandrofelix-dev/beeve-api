@@ -15,4 +15,6 @@ export const errorMessagesPTBR = {
   'user/STUDENT_CODE_ALREADY_EXISTS':
     'Esse código de estudante já está cadastrado.',
   'user/EMAIL_ALREADY_EXISTS': 'Esse email já está cadastrado.',
+
+  'supa/INVALID_CREDENTIALS': 'Credenciais do Supabase inválidas.',
 }

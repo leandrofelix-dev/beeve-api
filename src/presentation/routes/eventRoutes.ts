@@ -3,13 +3,15 @@ import {
   getEventByCode,
   getEventById,
   getAllEvents,
-  createEvent,
+  createEventController,
   deleteEvent,
   editEvent,
 } from '../controllers/eventController'
 import { authenticate } from '../middlewares/authMiddleware'
-import { createEventValidator } from '../middlewares/validateMiddleware'
-import { upload } from '../middlewares/uploadMiddleware'
+// import { createEventValidator } from '../middlewares/validateMiddleware'
+// import { upload } from '../middlewares/uploadMiddleware'
+// import { multerMiddleware } from '../middlewares/multerMiddleware'
+// import { upload } from '../../../config/multer'
 
 export function routerEvent(router: Router) {
   router
@@ -19,9 +21,10 @@ export function routerEvent(router: Router) {
     .post(
       '/event',
       authenticate,
-      upload.single('file'),
-      createEventValidator,
-      createEvent,
+      // createEventValidator,
+      // upload.single('file'),
+      // multerMiddleware,
+      createEventController,
     )
     .delete('/event/:id', deleteEvent)
     .put('/event/:id', editEvent)

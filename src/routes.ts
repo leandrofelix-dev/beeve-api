@@ -2,9 +2,9 @@ import { Request, Router, Response } from 'express'
 
 import { authValidator } from './presentation/middlewares/validateMiddleware'
 import { createToken } from './presentation/controllers/authController'
-import { routerUser } from './presentation/routers/userRoutes'
-import { routerEvent } from './presentation/routers/eventRoutes'
-import { routerSubscriptions } from './presentation/routers/subscriptionRoutes'
+import { routerUser } from './presentation/routes/userRoutes'
+import { routerEvent } from './presentation/routes/eventRoutes'
+import { routerSubscriptions } from './presentation/routes/subscriptionRoutes'
 
 const router = Router()
 

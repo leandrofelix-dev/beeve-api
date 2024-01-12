@@ -1,5 +1,6 @@
-import { createClient } from '@supabase/supabase-js'
 import dotenv from 'dotenv'
+import { createClient } from '@supabase/supabase-js'
+import { errorMessagesPTBR } from '../_shared/errors-messages'
 
 dotenv.config()
 
@@ -8,14 +9,11 @@ const supabaseKey = process.env.SUPABASE_KEY
 const supabaseEmail = process.env.SUPABASE_EMAIL
 const supabasePassword = process.env.SUPABASE_PASSWORD
 
-if (!supabaseUrl) throw new Error('No Supabase URL')
-if (!supabaseKey) throw new Error('No Supabase KEY')
-if (!supabaseEmail) throw new Error('No Supabase Email')
-if (!supabasePassword) throw new Error('No Supabase Password')
+if (!supabaseUrl || !supabaseKey || !supabaseEmail || !supabasePassword)
+  throw new Error(errorMessagesPTBR['supa/INVALID_CREDENTIALS'])
 
-export const supabase = createClient(supabaseUrl, supabaseKey)
-
-export const connectToSupabase = async () => {
+const supabase = createClient(supabaseUrl, supabaseKey)
+const connectToSupabase = async () => {
   try {
     await supabase.auth.signInWithPassword({
       email: supabaseEmail,
@@ -26,3 +24,5 @@ export const connectToSupabase = async () => {
     console.error(error)
   }
 }
+
+export { supabase, connectToSupabase }

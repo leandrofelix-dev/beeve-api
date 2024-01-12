@@ -21,7 +21,7 @@ export async function createUserController(
       .status(201)
       .json({ [responseMessagesPTBR['user/CREATED']]: createdUser })
   } catch (err: any) {
-    return res.status(400).json({ error: err.message })
+    return res.status(400).json(err.message)
   }
 }
 

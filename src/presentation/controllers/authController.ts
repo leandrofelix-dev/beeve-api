@@ -7,8 +7,9 @@ export async function createToken(req: Request, res: Response) {
   const secret = process.env.JWT_SECRET
   const { email, password } = req.body
   try {
-    res.json({ token: await authUseCase(email, password, secret) })
+    const response = await authUseCase(email, password, secret)
+    res.status(200).json({ token: `Bearer ${response}` })
   } catch (error) {
-    res.status(500).json({ error })
+    return res.status(401).json({ error: 'Email ou senha inválidos!' })
   }
 }
