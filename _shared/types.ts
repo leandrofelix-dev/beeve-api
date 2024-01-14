@@ -4,3 +4,8 @@ export type UserLogged = {
     iat: number
   }
 }
+
+export type UserInfo = {
+  userId: string
+  iat: number
+}
