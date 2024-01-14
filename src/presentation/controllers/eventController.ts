@@ -7,6 +7,7 @@ import Log from '../../../config/logger'
 import { AuthenticatedRequest } from '../middlewares/authMiddleware'
 // import { createEventValidator } from '../middlewares/validateMiddleware'
 import { UserLogged } from '../../../_shared/types'
+import { createEventUseCase } from '../../data/usecases/eventUseCase'
 
 export async function getEventByCode(req: Request, res: Response) {
   const eventCode = req.params.code
@@ -56,37 +57,14 @@ export async function createEventController(
   res: Response,
 ) {
   try {
-    const { body } = req
-    const { user } = req as UserLogged
-    const { name, dateTime, location, description } = body
-    const maxParticipants = Number(body.maxParticipants)
-    const isPublic = Boolean(body.isPublic)
-    const eventCode: string = await generateCode()
+    const data = req.body
+    const { user } = req as unknown as UserLogged
 
-    const findUserById = await prisma.user.findUnique({
-      where: { id: '77502e89-1904-4f51-baf0-654fc7fedc0d' },
-    })
-    console.log(user.userId)
-    if (!findUserById) {
-      return res.status(404).json({ error: 'Usuário não encontrado' })
-    }
+    const createdEvent = await createEventUseCase(data, user)
 
-    const event = await prisma.event.create({
-      data: {
-        creator: { connect: { id: '77502e89-1904-4f51-baf0-654fc7fedc0d' } },
-        name: 'name here teste',
-        dateTime: new Date(),
-        location: 'location here teste',
-        description: 'description here teste',
-        maxParticipants: 10,
-        eventCode: '12312312312',
-        isPublic: true,
-      },
-    })
-
-    return res.status(201).json({ event })
+    return res.status(201).json({ createdEvent })
   } catch (error: any) {
-    // Log.error(`error: ${error.message}`)
+    Log.error(`error: ${error.message}`)
     return res.status(500).json(error.message)
   }
 }

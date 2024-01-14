@@ -8,7 +8,7 @@ import {
   editEvent,
 } from '../controllers/eventController'
 import { authenticate } from '../middlewares/authMiddleware'
-// import { createEventValidator } from '../middlewares/validateMiddleware'
+import { createEventValidator } from '../middlewares/validateMiddleware'
 // import { upload } from '../middlewares/uploadMiddleware'
 // import { multerMiddleware } from '../middlewares/multerMiddleware'
 // import { upload } from '../../../config/multer'
@@ -21,7 +21,7 @@ export function routerEvent(router: Router) {
     .post(
       '/event',
       authenticate,
-      // createEventValidator,
+      createEventValidator,
       // upload.single('file'),
       // multerMiddleware,
       createEventController,

@@ -1,15 +1,16 @@
-import { Request, Router, Response } from 'express'
+import { Router, Response } from 'express'
 
 import { authValidator } from './presentation/middlewares/validateMiddleware'
 import { createToken } from './presentation/controllers/authController'
 import { routerUser } from './presentation/routes/userRoutes'
 import { routerEvent } from './presentation/routes/eventRoutes'
 import { routerSubscriptions } from './presentation/routes/subscriptionRoutes'
+import { AuthenticatedRequest } from './presentation/middlewares/authMiddleware'
 
 const router = Router()
 
 router
-  .get('/health', (req: Request, res: Response) => {
+  .get('/health', (req: AuthenticatedRequest, res: Response) => {
     res.status(200).json({ msg: 'Oi? A API está online! 👩🏽‍🚀' })
   })
   .post('/auth', authValidator, createToken)
