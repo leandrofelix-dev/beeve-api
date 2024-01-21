@@ -12,6 +12,7 @@ export async function createEventRepository(data: Omit<Event, 'id'>) {
       dateTime: data.dateTime,
       eventCode: data.eventCode,
       creator: { connect: { id: data.idCreator } },
+      coverUrl: data.coverUrl,
     },
   })
 }

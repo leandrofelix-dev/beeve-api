@@ -55,12 +55,10 @@ export async function createEventController(
   req: AuthenticatedRequest,
   res: Response,
 ) {
-  console.log()
   try {
-    const body = JSON.parse(req.body)
+    const body = req.body
     const { file } = req
     const { user } = req as unknown as UserLogged
-    console.log(file?.originalname, body)
     const data = {
       ...body,
       file,

@@ -4,6 +4,7 @@ export const errorMessagesPTBR = {
   'event/INVALID_EVENT_CODE': 'Código de evento inválido.',
   'event/INVALID_EVENT_ID': 'Id de evento inválido.',
   'event/CODE_ALREADY_EXIST': 'Esse código de evento já existe.',
+  'event/COVER_NOT_FOUND': 'Capa do evento não encontrada.',
 
   'subscription/NOT_FOUND': 'Inscrição não encontrada.',
   'subscription/USER_OR_EVENT_NOT_FOUND':
@@ -17,5 +18,8 @@ export const errorMessagesPTBR = {
     'Esse código de estudante já está cadastrado.',
   'user/EMAIL_ALREADY_EXISTS': 'Esse email já está cadastrado.',
 
-  'supa/INVALID_CREDENTIALS': 'Credenciais do Supabase inválidas.',
+  'supa/MISSING_ENV_VARS': 'Variáveis de ambiente do Supabase não encontradas.',
+  'supa/MISSING_FILE': 'Arquivo não encontrado.',
+  'supa/MISSING_FILE_URL': 'URL do arquivo não encontrado.',
+  'supa/UPLOAD_ERROR': 'Erro ao fazer upload da imagem.',
 }
