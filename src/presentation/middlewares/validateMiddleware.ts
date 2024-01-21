@@ -48,7 +48,9 @@ export function createEventValidator(
   res: Response,
   next: NextFunction,
 ) {
-  const data = req.body
+  const body = req.body
+  console.log(body)
+  const data = JSON.parse(body)
   try {
     event.parse(data)
     next()
