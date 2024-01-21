@@ -1,6 +1,10 @@
+import { errorMessagesPTBR } from '../../../_shared/errors-messages'
 import { UserInfo } from '../../../_shared/types'
 import { EventCreateDTO } from '../../domain/models/eventDTO'
-import { createEventRepository } from '../../infra/repositories/eventRepository'
+import {
+  createEventRepository,
+  findEventCodeByCode,
+} from '../../infra/repositories/eventRepository'
 import { generateCode } from '../utils/createEventCode'
 
 export async function createEventUseCase(data: EventCreateDTO, user: UserInfo) {
@@ -11,6 +15,14 @@ export async function createEventUseCase(data: EventCreateDTO, user: UserInfo) {
   const dateTime = new Date(data.dateTime)
 
   const eventCode: string = generateCode()
+
+  const alreadyExistThisEventCode = await findEventCodeByCode(eventCode)
+
+  if (alreadyExistThisEventCode)
+    throw new Error(errorMessagesPTBR['event/CODE_ALREADY_EXIST'])
+
+  // const coverUrl = await uploadImage(file)
+  // if (!coverUrl) throw new Error(errorMessagesPTBR['event/IMAGE_NOT_FOUND'])
 
   const params = {
     idCreator: user.userId,

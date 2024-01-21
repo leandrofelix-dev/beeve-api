@@ -15,3 +15,9 @@ export async function createEventRepository(data: Omit<Event, 'id'>) {
     },
   })
 }
+
+export async function findEventCodeByCode(eventCode: string) {
+  return await prisma.event.findUnique({
+    where: { eventCode },
+  })
+}

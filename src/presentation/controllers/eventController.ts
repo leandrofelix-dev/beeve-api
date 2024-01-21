@@ -2,7 +2,6 @@
 
 import { Request, Response } from 'express'
 import { prisma } from '../../../config/prisma'
-import { generateCode } from '../../data/utils/createEventCode'
 import Log from '../../../config/logger'
 import { AuthenticatedRequest } from '../middlewares/authMiddleware'
 // import { createEventValidator } from '../middlewares/validateMiddleware'
@@ -56,9 +55,16 @@ export async function createEventController(
   req: AuthenticatedRequest,
   res: Response,
 ) {
+  console.log()
   try {
-    const data = req.body
+    const body = JSON.parse(req.body)
+    const { file } = req
     const { user } = req as unknown as UserLogged
+    console.log(file?.originalname, body)
+    const data = {
+      ...body,
+      file,
+    }
 
     const createdEvent = await createEventUseCase(data, user)
 
