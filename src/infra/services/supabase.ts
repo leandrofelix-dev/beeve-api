@@ -1,23 +1,34 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createClient } from '@supabase/supabase-js'
-import { Request } from 'express'
+import { Request, Response, NextFunction } from 'express'
+import fs from 'fs'
+import sharp from 'sharp'
+import { errorMessagesPTBR } from '../../../_shared/errors-messages'
 
-async function uploadToSupabase(req: Request) {
+async function uploadToSupabase(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
   try {
     const supabaseUrl = process.env.SUPABASE_URL
     const supabaseKey = process.env.SUPABASE_KEY
 
     if (!supabaseUrl || !supabaseKey)
-      throw new Error('Missing supabaseUrl or supabaseKey')
+      throw new Error(errorMessagesPTBR['supa/MISSING_ENV_VARS'])
 
     const { file } = req
-    if (!file) throw new Error('No file found.')
+    if (!file) throw new Error(errorMessagesPTBR['supa/MISSING_FILE'])
 
-    console.log('==============', file.buffer, '++++++++++++++++++')
+    const { mimetype, path } = file
+    const buffer = fs.readFileSync(path)
 
-    const { buffer, mimetype } = file
-    if (!buffer) throw new Error('No buffer')
-    if (!mimetype) throw new Error('No mimetype')
+    const optimizedImageOptions = { width: 480, height: 270 }
+
+    const optimizedBuffer = await sharp(buffer)
+      .resize(optimizedImageOptions)
+      .toFormat('png')
+      .toBuffer()
 
     const supabase = createClient(supabaseUrl, supabaseKey)
 
@@ -26,13 +37,32 @@ async function uploadToSupabase(req: Request) {
 
     const uploadedImage = await supabase.storage
       .from('eventCovers')
-      .upload(filePathInSupabase, buffer, {
+      .upload(filePathInSupabase, optimizedBuffer, {
         contentType: mimetype,
       })
 
-    console.log(uploadedImage)
+    if (uploadedImage.error)
+      throw new Error(
+        `${errorMessagesPTBR['supa/UPLOAD_ERROR']} ${uploadedImage.error.message}`,
+      )
+
+    const { data } = supabase.storage
+      .from('eventCovers')
+      .getPublicUrl(uploadedImage.data?.path)
+
+    if (!data || !data.publicUrl) {
+      throw new Error(errorMessagesPTBR['supa/MISSING_FILE_URL'])
+    }
+
+    const supabaseUpload = data
+    req.body.coverUrl = supabaseUpload.publicUrl
+    next()
   } catch (error: any) {
-    console.log(error.message)
+    console.error(error.message)
+    res.status(500).json({
+      error: errorMessagesPTBR['supa/UPLOAD_ERROR'],
+      details: error.message,
+    })
   }
 }
 

@@ -10,7 +10,7 @@ const supabaseEmail = process.env.SUPABASE_EMAIL
 const supabasePassword = process.env.SUPABASE_PASSWORD
 
 if (!supabaseUrl || !supabaseKey || !supabaseEmail || !supabasePassword)
-  throw new Error(errorMessagesPTBR['supa/INVALID_CREDENTIALS'])
+  throw new Error(errorMessagesPTBR['supa/MISSING_ENV_VARS'])
 
 const supabase = createClient(supabaseUrl, supabaseKey)
 const connectToSupabase = async () => {

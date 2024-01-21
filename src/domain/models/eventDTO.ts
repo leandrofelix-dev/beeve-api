@@ -6,4 +6,5 @@ export type EventCreateDTO = {
   maxParticipants: number
   isPublic: boolean
   eventCode: string
+  coverUrl: string
 }

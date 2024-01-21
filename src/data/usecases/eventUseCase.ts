@@ -8,7 +8,7 @@ import {
 import { generateCode } from '../utils/createEventCode'
 
 export async function createEventUseCase(data: EventCreateDTO, user: UserInfo) {
-  const { name, location, description } = data
+  const { name, location, description, coverUrl } = data
 
   const maxParticipants = Number(data.maxParticipants)
   const isPublic = Boolean(data.isPublic)
@@ -21,12 +21,11 @@ export async function createEventUseCase(data: EventCreateDTO, user: UserInfo) {
   if (alreadyExistThisEventCode)
     throw new Error(errorMessagesPTBR['event/CODE_ALREADY_EXIST'])
 
-  // const coverUrl = await uploadImage(file)
-  // if (!coverUrl) throw new Error(errorMessagesPTBR['event/IMAGE_NOT_FOUND'])
+  if (!coverUrl) throw new Error(errorMessagesPTBR['event/COVER_NOT_FOUND'])
 
   const params = {
     idCreator: user.userId,
-    coverUrl: null,
+    coverUrl,
     name,
     location,
     description,
