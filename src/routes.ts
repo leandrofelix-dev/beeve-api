@@ -7,6 +7,9 @@ import { routerEvent } from './presentation/routes/eventRoutes'
 import { routerSubscriptions } from './presentation/routes/subscriptionRoutes'
 import { AuthenticatedRequest } from './presentation/middlewares/authMiddleware'
 
+import swaggerUi from 'swagger-ui-express'
+import swaggerSpec from '../config/swagger'
+
 const router = Router()
 
 router
@@ -14,6 +17,7 @@ router
     res.status(200).json({ msg: 'Oi? A API está online! 👩🏽‍🚀' })
   })
   .post('/auth', authValidator, createToken)
+  .use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 
 routerUser(router)
 routerEvent(router)
