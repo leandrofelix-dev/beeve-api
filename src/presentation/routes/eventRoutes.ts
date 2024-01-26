@@ -4,7 +4,7 @@ import {
   getEventById,
   getAllEvents,
   createEventController,
-  deleteEvent,
+  deleteEventController,
   editEvent,
 } from '../controllers/eventController'
 import { authenticate } from '../middlewares/authMiddleware'
@@ -25,7 +25,7 @@ export function routerEvent(router: Router) {
       uploadToSupabase,
       createEventController,
     )
-    .delete('/event/:id', deleteEvent)
+    .delete('/event/:id', deleteEventController)
     .put('/event/:id', editEvent)
 
   return router

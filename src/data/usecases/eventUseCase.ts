@@ -1,9 +1,12 @@
 import { errorMessagesPTBR } from '../../../_shared/errors-messages'
 import { UserInfo } from '../../../_shared/types'
+import { prisma } from '../../../config/prisma'
 import { EventCreateDTO } from '../../domain/models/eventDTO'
 import {
   createEventRepository,
+  deleteEventRepository,
   findEventCodeByCode,
+  findEventCodeById,
 } from '../../infra/repositories/eventRepository'
 import { generateCode } from '../utils/createEventCode'
 
@@ -35,4 +38,12 @@ export async function createEventUseCase(data: EventCreateDTO, user: UserInfo) {
     eventCode,
   }
   return await createEventRepository(params)
+}
+
+export async function deleteEventUseCase(id: string) {
+  const event = await findEventCodeById(id)
+
+  if (!event) throw new Error(errorMessagesPTBR['event/NOT_FOUND'])
+
+  return await deleteEventRepository(id)
 }
