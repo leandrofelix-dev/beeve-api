@@ -6,7 +6,10 @@ import Log from '../../../config/logger'
 import { AuthenticatedRequest } from '../middlewares/authMiddleware'
 // import { createEventValidator } from '../middlewares/validateMiddleware'
 import { UserLogged } from '../../../_shared/types'
-import { createEventUseCase } from '../../data/usecases/eventUseCase'
+import {
+  createEventUseCase,
+  deleteEventUseCase,
+} from '../../data/usecases/eventUseCase'
 
 export async function getEventByCode(req: Request, res: Response) {
   const eventCode = req.params.code
@@ -66,6 +69,7 @@ export async function createEventController(
 
     const createdEvent = await createEventUseCase(data, user)
 
+    Log.info(`event ${createdEvent.id} was be created.`)
     return res.status(201).json({ createdEvent })
   } catch (error: any) {
     Log.error(`error: ${error.message}`)
@@ -73,28 +77,17 @@ export async function createEventController(
   }
 }
 
-export async function deleteEvent(req: Request, res: Response) {
+export async function deleteEventController(req: Request, res: Response) {
   const id = req.params.id
-  const event = await prisma.event.findUnique({
-    where: {
-      id,
-    },
-  })
-
-  if (!event) {
-    return res.status(404).json({ msg: 'event not found' })
-  }
 
   try {
-    const deletedEvent = await prisma.event.delete({
-      where: {
-        id,
-      },
-    })
-    Log.info(`event ${id} was be deleted`)
-    return res.status(204).json({ deleted: deletedEvent })
-  } catch (err: any) {
-    Log.error(`error: ${err.message}`)
+    const deletedEvent = await deleteEventUseCase(id)
+
+    Log.info(`event ${id} was be deleted.`)
+    return res.status(201).json({ deleted: deletedEvent.id })
+  } catch (error: any) {
+    Log.error(`error: ${error.message}.`)
+    return res.status(500).json(error.message)
   }
 }
 

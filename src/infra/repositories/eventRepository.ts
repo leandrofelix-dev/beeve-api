@@ -22,3 +22,17 @@ export async function findEventCodeByCode(eventCode: string) {
     where: { eventCode },
   })
 }
+
+export async function findEventCodeById(id: string) {
+  return await prisma.event.findUnique({
+    where: { id },
+  })
+}
+
+export async function deleteEventRepository(id: string) {
+  return await prisma.event.delete({
+    where: {
+      id,
+    },
+  })
+}

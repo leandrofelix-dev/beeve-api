@@ -5,6 +5,7 @@ export const errorMessagesPTBR = {
   'event/INVALID_EVENT_ID': 'Id de evento inválido.',
   'event/CODE_ALREADY_EXIST': 'Esse código de evento já existe.',
   'event/COVER_NOT_FOUND': 'Capa do evento não encontrada.',
+  'event/NOT_FOUND': 'Evento não encontrado.',
 
   'subscription/NOT_FOUND': 'Inscrição não encontrada.',
   'subscription/USER_OR_EVENT_NOT_FOUND':
