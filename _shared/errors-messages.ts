@@ -18,6 +18,7 @@ export const errorMessagesPTBR = {
   'user/STUDENT_CODE_ALREADY_EXISTS':
     'Esse código de estudante já está cadastrado.',
   'user/EMAIL_ALREADY_EXISTS': 'Esse email já está cadastrado.',
+  'user/NOT_FOUND': 'Usuário não encontrado.',
 
   'supa/MISSING_ENV_VARS': 'Variáveis de ambiente do Supabase não encontradas.',
   'supa/MISSING_FILE': 'Arquivo não encontrado.',

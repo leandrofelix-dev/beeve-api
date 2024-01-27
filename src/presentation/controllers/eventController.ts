@@ -1,29 +1,28 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { Request, Response } from 'express'
 import { prisma } from '../../../config/prisma'
-import Log from '../../../config/logger'
 import { AuthenticatedRequest } from '../middlewares/authMiddleware'
-// import { createEventValidator } from '../middlewares/validateMiddleware'
 import { UserLogged } from '../../../_shared/types'
 import {
   createEventUseCase,
   deleteEventUseCase,
+  getEventByCodeUseCase,
 } from '../../data/usecases/eventUseCase'
+import Log from '../../../config/logger'
+import { errorMessagesPTBR } from '../../../_shared/errors-messages'
 
-export async function getEventByCode(req: Request, res: Response) {
-  const eventCode = req.params.code
+export async function getEventByCodeController(req: Request, res: Response) {
+  const code = req.params.code
   try {
-    const event = await prisma.event.findMany({
-      where: { eventCode },
-    })
+    const event = await getEventByCodeUseCase(code)
+    if (event)
+      return res
+        .status(404)
+        .json({ error: errorMessagesPTBR['event/NOT_FOUND'] })
 
-    if (event.length === 0)
-      return res.status(404).json({ error: 'invalid event code' })
-
-    return res.status(200).json(event)
+    return res.status(201).json({ event })
   } catch (err: any) {
-    Log.error(`error: ${err.message}`)
+    return res.status(400).json({ error: err.message })
   }
 }
 

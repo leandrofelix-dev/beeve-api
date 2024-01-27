@@ -36,3 +36,9 @@ export async function deleteEventRepository(id: string) {
     },
   })
 }
+
+export async function getEventByCodeRepository(code: string) {
+  return await prisma.event.findUnique({
+    where: { eventCode: code },
+  })
+}

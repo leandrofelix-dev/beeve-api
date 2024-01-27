@@ -1,20 +1,19 @@
 import { Router } from 'express'
 import {
-  getEventByCode,
   getEventById,
   getAllEvents,
   createEventController,
   deleteEventController,
   editEvent,
+  getEventByCodeController,
 } from '../controllers/eventController'
 import { authenticate } from '../middlewares/authMiddleware'
-// import { createEventValidator } from '../middlewares/validateMiddleware'
 import { sendFile } from '../../../config/multer'
 import { uploadToSupabase } from '../../infra/services/supabase'
 
 export function routerEvent(router: Router) {
   router
-    .get('/event/code/:code', getEventByCode)
+    .get('/event/code/:code', getEventByCodeController)
     .get('/event/:id', authenticate, getEventById)
     .get('/events', getAllEvents)
     .post(

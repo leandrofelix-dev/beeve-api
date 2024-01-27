@@ -8,6 +8,7 @@ import {
   editUserUseCase,
   getUserUseCase,
 } from '../../data/usecases/userUseCase'
+import { errorMessagesPTBR } from '../../../_shared/errors-messages'
 
 export async function createUserController(
   req: AuthenticatedRequest,
@@ -31,9 +32,11 @@ export async function deleteUserController(
 ) {
   try {
     const id = req.params.id
-    await deleteUserUseCase(id)
+    const deletedUser = await deleteUserUseCase(id)
 
-    return res.status(201).json([responseMessagesPTBR['user/DELETED']])
+    return res
+      .status(201)
+      .json({ [responseMessagesPTBR['user/DELETED']]: deletedUser.id })
   } catch (err: any) {
     return res.status(400).json({ error: err.message })
   }
@@ -63,6 +66,11 @@ export async function getUserController(
   try {
     const id = req.params.id
     const user = await getUserUseCase(id)
+
+    if (!user)
+      return res
+        .status(400)
+        .json({ msg: [errorMessagesPTBR['user/NOT_FOUND']] })
 
     return res.status(201).json(user)
   } catch (err: any) {
