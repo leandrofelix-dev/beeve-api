@@ -12,7 +12,8 @@
     "migrate": "prisma migrate dev",
     "build": "npx tsup src",
     "start": "node dist/app.js",
-    "prisma:generate": "prisma generate"
+    "prisma:generate": "prisma generate",
+    "commit": "cz"
   },
   "keywords": [],
   "author": "leandrofelix-dev",
@@ -26,6 +27,7 @@
     "@types/node": "^20.10.5",
     "@types/swagger-jsdoc": "^6.0.4",
     "@types/swagger-ui-express": "^4.1.6",
+    "cz-conventional-changelog": "^3.3.0",
     "eslint": "^8.56.0",
     "prisma": "^5.7.1",
     "ts-node": "^10.9.2",
@@ -40,6 +42,7 @@
     "@types/jsonwebtoken": "^9.0.5",
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.2",
+    "commitizen": "^4.3.0",
     "config": "^3.3.9",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
@@ -57,5 +60,10 @@
     "tsc": "^2.0.4",
     "winston": "^3.11.0",
     "zod": "^3.22.4"
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
   }
 }
