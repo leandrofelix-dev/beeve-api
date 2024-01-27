@@ -8,7 +8,6 @@ import {
   editEvent,
 } from '../controllers/eventController'
 import { authenticate } from '../middlewares/authMiddleware'
-// import { createEventValidator } from '../middlewares/validateMiddleware'
 import { sendFile } from '../../../config/multer'
 import { uploadToSupabase } from '../../infra/services/supabase'
 

@@ -15,7 +15,7 @@ export async function createUserRepository(data: Omit<User, 'id'>) {
   })
 }
 export async function deleteUserRepository(id: string) {
-  await prisma.user.delete({ where: { id } })
+  return await prisma.user.delete({ where: { id } })
 }
 export async function editUserRepository(user: User, data: Omit<User, 'id'>) {
   return await prisma.user.update({ where: { id: user.id }, data })

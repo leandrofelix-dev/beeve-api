@@ -32,9 +32,11 @@ export async function deleteUserController(
 ) {
   try {
     const id = req.params.id
-    await deleteUserUseCase(id)
+    const deletedUser = await deleteUserUseCase(id)
 
-    return res.status(201).json([responseMessagesPTBR['user/DELETED']])
+    return res
+      .status(201)
+      .json({ [responseMessagesPTBR['user/DELETED']]: deletedUser.id })
   } catch (err: any) {
     return res.status(400).json({ error: err.message })
   }
