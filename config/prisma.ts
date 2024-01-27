@@ -10,7 +10,7 @@ const prisma = new PrismaClient(
     : undefined,
 )
 
-async function connectToDatabase() {
+async function connectToPostgres() {
   try {
     await prisma.$connect()
     console.info('Conectado ao postgresSQL 🐘')
@@ -19,4 +19,4 @@ async function connectToDatabase() {
   }
 }
 
-export { prisma, connectToDatabase }
+export { prisma, connectToPostgres }
