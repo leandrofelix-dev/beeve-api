@@ -6,7 +6,7 @@ import {
   createUserRepository,
   deleteUserRepository,
   editUserRepository,
-  getUserById,
+  getUserByIdRepository,
 } from '../../infra/repositories/userRepository'
 import bcrypt from 'bcrypt'
 import { User } from '@prisma/client'
@@ -24,6 +24,7 @@ export async function createUserUseCase(
     isExternal,
     institutionalCode,
   } = data
+
   const dateOfBirth = new Date(data.dateOfBirth)
 
   if (password !== passwordConfirmation)
@@ -54,20 +55,20 @@ export async function createUserUseCase(
 }
 
 export async function deleteUserUseCase(id: string) {
-  const user = getUserById(id)
-  if (!user) throw new Error('user not found')
+  const user = getUserByIdRepository(id)
+  if (!user) throw new Error(errorMessagesPTBR['user/NOT_FOUND'])
 
   return deleteUserRepository(id)
 }
 
 export async function editUserUseCase(id: string, data: User) {
-  const user = await getUserById(id)
+  const user = await getUserByIdRepository(id)
 
-  if (!user) throw new Error('user not found')
+  if (!user) throw new Error(errorMessagesPTBR['user/NOT_FOUND'])
 
   return editUserRepository(user, data)
 }
 
 export async function getUserUseCase(id: string) {
-  return getUserById(id)
+  return getUserByIdRepository(id)
 }

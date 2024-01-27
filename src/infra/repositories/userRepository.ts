@@ -20,6 +20,6 @@ export async function deleteUserRepository(id: string) {
 export async function editUserRepository(user: User, data: Omit<User, 'id'>) {
   return await prisma.user.update({ where: { id: user.id }, data })
 }
-export async function getUserById(id: string) {
+export async function getUserByIdRepository(id: string) {
   return await prisma.user.findUnique({ where: { id } })
 }
