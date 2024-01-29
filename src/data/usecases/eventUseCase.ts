@@ -4,9 +4,10 @@ import { EventCreateDTO } from '../../domain/models/eventDTO'
 import {
   createEventRepository,
   deleteEventRepository,
-  findEventCodeByCode,
-  findEventCodeById,
+  editEventRepository,
+  getAllEventsRepository,
   getEventByCodeRepository,
+  getEventByIdRepository,
 } from '../../infra/repositories/eventRepository'
 import { generateCode } from '../utils/createEventCode'
 
@@ -19,7 +20,7 @@ export async function createEventUseCase(data: EventCreateDTO, user: UserInfo) {
 
   const eventCode: string = generateCode()
 
-  const alreadyExistThisEventCode = await findEventCodeByCode(eventCode)
+  const alreadyExistThisEventCode = await getEventByCodeRepository(eventCode)
 
   if (alreadyExistThisEventCode)
     throw new Error(errorMessagesPTBR['event/CODE_ALREADY_EXIST'])
@@ -41,13 +42,27 @@ export async function createEventUseCase(data: EventCreateDTO, user: UserInfo) {
 }
 
 export async function deleteEventUseCase(id: string) {
-  const event = await findEventCodeById(id)
+  const event = await getEventByIdRepository(id)
 
   if (!event) throw new Error(errorMessagesPTBR['event/NOT_FOUND'])
 
   return await deleteEventRepository(id)
 }
 
+export async function editEventUseCase(id: string, data: Event) {
+  const event = await getEventByIdRepository(id)
+  if (event) throw new Error(errorMessagesPTBR['event/NOT_FOUND'])
+  return await editEventRepository(id, data)
+}
+
 export async function getEventByCodeUseCase(code: string) {
   return getEventByCodeRepository(code)
+}
+
+export async function getEventByIdUseCase(id: string) {
+  return getEventByIdRepository(id)
+}
+
+export async function getAllEventsUseCase() {
+  return getAllEventsRepository()
 }

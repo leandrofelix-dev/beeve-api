@@ -17,18 +17,6 @@ export async function createEventRepository(data: Omit<Event, 'id'>) {
   })
 }
 
-export async function findEventCodeByCode(eventCode: string) {
-  return await prisma.event.findUnique({
-    where: { eventCode },
-  })
-}
-
-export async function findEventCodeById(id: string) {
-  return await prisma.event.findUnique({
-    where: { id },
-  })
-}
-
 export async function deleteEventRepository(id: string) {
   return await prisma.event.delete({
     where: {
@@ -37,8 +25,25 @@ export async function deleteEventRepository(id: string) {
   })
 }
 
+export async function editEventRepository(id: string, data: any) {
+  return await prisma.event.update({
+    where: { id },
+    data,
+  })
+}
+
 export async function getEventByCodeRepository(code: string) {
   return await prisma.event.findUnique({
     where: { eventCode: code },
   })
+}
+
+export async function getEventByIdRepository(id: string) {
+  return await prisma.event.findUnique({
+    where: { id },
+  })
+}
+
+export async function getAllEventsRepository() {
+  return await prisma.event.findMany()
 }

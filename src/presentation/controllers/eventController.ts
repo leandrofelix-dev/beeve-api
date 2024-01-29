@@ -6,10 +6,14 @@ import { UserLogged } from '../../../_shared/types'
 import {
   createEventUseCase,
   deleteEventUseCase,
+  editEventUseCase,
+  getAllEventsUseCase,
   getEventByCodeUseCase,
+  getEventByIdUseCase,
 } from '../../data/usecases/eventUseCase'
 import Log from '../../../config/logger'
 import { errorMessagesPTBR } from '../../../_shared/errors-messages'
+import { responseMessagesPTBR } from '../../../_shared/response'
 
 export async function getEventByCodeController(req: Request, res: Response) {
   const code = req.params.code
@@ -26,30 +30,32 @@ export async function getEventByCodeController(req: Request, res: Response) {
   }
 }
 
-export async function getEventById(req: Request, res: Response) {
-  const eventId = req.params.id
+export async function getEventByIdController(req: Request, res: Response) {
+  const id = req.params.id
   try {
-    const event = await prisma.event.findMany({
-      where: { id: eventId },
-    })
-    if (event.length === 0) {
-      return res.status(404).json({ error: 'invalid event id' })
-    }
-    return res.status(200).json(event)
+    const event = await getEventByIdUseCase(id)
+    if (event)
+      return res
+        .status(404)
+        .json({ error: errorMessagesPTBR['event/NOT_FOUND'] })
+
+    return res.status(201).json({ event })
   } catch (err: any) {
-    Log.error(`error: ${err.message}`)
+    return res.status(400).json({ error: err.message })
   }
 }
 
-export async function getAllEvents(req: Request, res: Response) {
+export async function getAllEventsController(req: Request, res: Response) {
   try {
-    const event = await prisma.event.findMany()
-    if (event.length === 0) {
-      return res.status(404).json({ msg: 'no events found' })
-    }
-    return res.status(200).json(event)
+    const events = await getAllEventsUseCase()
+    if (events)
+      return res
+        .status(404)
+        .json({ error: errorMessagesPTBR['event/NOT_FOUND'] })
+
+    return res.status(201).json({ event })
   } catch (err: any) {
-    Log.error(`error: ${err.message}`)
+    return res.status(400).json({ error: err.message })
   }
 }
 
@@ -68,10 +74,8 @@ export async function createEventController(
 
     const createdEvent = await createEventUseCase(data, user)
 
-    Log.info(`event ${createdEvent.id} was be created.`)
     return res.status(201).json({ createdEvent })
   } catch (error: any) {
-    Log.error(`error: ${error.message}`)
     return res.status(500).json(error.message)
   }
 }
@@ -82,32 +86,22 @@ export async function deleteEventController(req: Request, res: Response) {
   try {
     const deletedEvent = await deleteEventUseCase(id)
 
-    Log.info(`event ${id} was be deleted.`)
     return res.status(201).json({ deleted: deletedEvent.id })
   } catch (error: any) {
-    Log.error(`error: ${error.message}.`)
     return res.status(500).json(error.message)
   }
 }
 
-export async function editEvent(req: Request, res: Response) {
+export async function editEventController(req: Request, res: Response) {
   const id = req.params.id
   const data = req.body
   try {
-    const event = await prisma.event.findMany({ where: { id } })
-    if (event.length === 0) {
-      return res.status(404).json({ msg: 'event not found' })
-    }
+    const editedEvent = await editEventUseCase(id, data)
 
-    const updatedEvent = await prisma.event.update({
-      where: { id },
-      data,
-    })
-
-    Log.info(`event ${id} was be updated`)
-    return res.status(200).json({ updated: updatedEvent })
+    return res
+      .status(201)
+      .json({ [responseMessagesPTBR['user/UPDATED']]: editedEvent.id })
   } catch (err: any) {
-    Log.error(`error: ${err.message}`)
-    return res.status(500).json({ error: 'internal server error' })
+    return res.status(400).json({ error: err.message })
   }
 }
