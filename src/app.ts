@@ -1,11 +1,10 @@
+import dotenv from 'dotenv'
 import express from 'express'
 import helmet from 'helmet'
-import dotenv from 'dotenv'
 import { CORSConfig } from '../config/cors'
-
-import router from './routes'
 import { connectToPostgres } from '../config/prisma'
 import { connectToSupabase } from '../config/supa'
+import router from './routes'
 
 dotenv.config()
 

@@ -48,9 +48,16 @@ export function createEventValidator(
   res: Response,
   next: NextFunction,
 ) {
-  const body = req.body
-  console.log(body)
-  const data = JSON.parse(body)
+  const form = JSON.parse(JSON.stringify(req.body))
+  const maxParticipants = Number(form.maxParticipants)
+  const dateTime = new Date(form.dateTime)
+
+  const data = {
+    ...form,
+    maxParticipants,
+    dateTime,
+  }
+
   try {
     event.parse(data)
     next()

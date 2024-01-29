@@ -10,6 +10,7 @@ import {
 import { authenticate } from '../middlewares/authMiddleware'
 import { sendFile } from '../../../config/multer'
 import { uploadToSupabase } from '../../infra/services/supabase'
+import { createEventValidator } from '../middlewares/validateMiddleware'
 
 export function routerEvent(router: Router) {
   router
@@ -19,8 +20,8 @@ export function routerEvent(router: Router) {
     .post(
       '/event',
       authenticate,
-      // createEventValidator,
       sendFile.single('file'),
+      createEventValidator,
       uploadToSupabase,
       createEventController,
     )
