@@ -1,10 +1,10 @@
 import { Router } from 'express'
 import {
-  getEventById,
-  getAllEvents,
+  getEventByIdController,
+  getAllEventsController,
   createEventController,
   deleteEventController,
-  editEvent,
+  editEventController,
   getEventByCodeController,
 } from '../controllers/eventController'
 import { authenticate } from '../middlewares/authMiddleware'
@@ -15,8 +15,8 @@ import { createEventValidator } from '../middlewares/validateMiddleware'
 export function routerEvent(router: Router) {
   router
     .get('/event/code/:code', getEventByCodeController)
-    .get('/event/:id', authenticate, getEventById)
-    .get('/events', getAllEvents)
+    .get('/event/id/:id', authenticate, getEventByIdController)
+    .get('/events', getAllEventsController)
     .post(
       '/event',
       authenticate,
@@ -26,7 +26,7 @@ export function routerEvent(router: Router) {
       createEventController,
     )
     .delete('/event/:id', deleteEventController)
-    .put('/event/:id', editEvent)
+    .put('/event/:id', editEventController)
 
   return router
 }
