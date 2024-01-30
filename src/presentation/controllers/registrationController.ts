@@ -5,36 +5,16 @@ import { errorMessagesPTBR } from '../../../_shared/errors-messages'
 import { prisma } from '../../../config/prisma'
 import Log from '../../../config/logger'
 import { responseMessagesPTBR } from '../../../_shared/response'
+import { createSubscriptionUseCase } from '../../data/usecases/subscriptionUseCase'
 
 export async function createSubscription(req: Request, res: Response) {
   const { idUser, idEvent } = req.body
-  const isValidIdUser = await prisma.user.findUnique({ where: { id: idUser } })
-  const isValidIdEvent = await prisma.event.findUnique({
-    where: { id: idEvent },
-  })
-  if (!isValidIdUser || !isValidIdEvent) {
-    return res
-      .status(404)
-      .json({ msg: errorMessagesPTBR['subscription/USER_OR_EVENT_NOT_FOUND'] })
-  }
-
-  const isValidIdRegistration = await prisma.subscription.findFirst({
-    where: { idUser, idEvent },
-  })
-  if (isValidIdRegistration) {
-    return res
-      .status(400)
-      .json({ msg: errorMessagesPTBR['subscription/USER_ALREADY_IN_EVENT'] })
-  }
 
   try {
-    await prisma.subscription.create({
-      data: {
-        idUser,
-        idEvent,
-      },
+    const createdSubscription = createSubscriptionUseCase(idUser, idEvent)
+    res.status(201).json({
+      [responseMessagesPTBR['subscription/CREATED']]: createdSubscription,
     })
-    res.status(201).json({ msg: responseMessagesPTBR['subscription/CREATED'] })
   } catch (err: any) {
     res.status(400).json({ msg: err.errors })
     Log.error(`error: ${err.message}`)
