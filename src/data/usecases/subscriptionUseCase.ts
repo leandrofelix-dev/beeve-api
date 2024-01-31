@@ -1,5 +1,8 @@
 import { getEventByIdRepository } from '../../infra/repositories/eventRepository'
-import { createSubscriptionRepository } from '../../infra/repositories/subscriptionRepository'
+import {
+  createSubscriptionRepository,
+  deleteSubscriptionRepository,
+} from '../../infra/repositories/subscriptionRepository'
 import { getUserByIdRepository } from '../../infra/repositories/userRepository'
 
 export async function createSubscriptionUseCase(
@@ -18,4 +21,10 @@ export async function createSubscriptionUseCase(
   )
 
   return createdSubscription
+}
+
+export async function deleteSubscriptionUseCase(id: string) {
+  const deletedSubscription = await deleteSubscriptionRepository(id)
+
+  return deletedSubscription
 }

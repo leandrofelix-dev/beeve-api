@@ -1,20 +1,20 @@
 import { Router } from 'express'
 import {
-  createSubscription,
-  deleteRegistration,
+  createSubscriptionController,
+  deleteSubscriptionController,
 } from '../controllers/registrationController'
 import { authenticate } from '../middlewares/authMiddleware'
 import { createSubscriptionValidator } from '../middlewares/validateMiddleware'
 
-export function routerSubscriptions(router: Router) {
+export function subscriptionRoutes(router: Router) {
   router
     .post(
       '/subscription',
       authenticate,
       createSubscriptionValidator,
-      createSubscription,
+      createSubscriptionController,
     )
-    .delete('/subscription/:id', authenticate, deleteRegistration)
+    .delete('/subscription/:id', authenticate, deleteSubscriptionController)
 
   return router
 }
