@@ -12,7 +12,7 @@ import { sendFile } from '../../../config/multer'
 import { uploadToSupabase } from '../../infra/services/supabase'
 import { createEventValidator } from '../middlewares/validateMiddleware'
 
-export function routerEvent(router: Router) {
+export function eventRoutes(router: Router) {
   router
     .get('/event/code/:code', getEventByCodeController)
     .get('/event/id/:id', authenticate, getEventByIdController)

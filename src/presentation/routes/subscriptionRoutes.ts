@@ -6,7 +6,7 @@ import {
 import { authenticate } from '../middlewares/authMiddleware'
 import { createSubscriptionValidator } from '../middlewares/validateMiddleware'
 
-export function routerSubscriptions(router: Router) {
+export function subscriptionRoutes(router: Router) {
   router
     .post(
       '/subscription',

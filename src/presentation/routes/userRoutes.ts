@@ -8,7 +8,7 @@ import {
 } from '../controllers/userController'
 import { createUserValidator } from '../middlewares/validateMiddleware'
 
-export function routerUser(router: Router) {
+export function userRoutes(router: Router) {
   router
     .get('/user/:id', authenticate, getUserController)
     .post('/user', authenticate, createUserValidator, createUserController)
