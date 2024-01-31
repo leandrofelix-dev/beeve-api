@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Request, Response } from 'express'
-import { prisma } from '../../../config/prisma'
 import { AuthenticatedRequest } from '../middlewares/authMiddleware'
 import { UserLogged } from '../../../_shared/types'
 import {
@@ -11,7 +10,6 @@ import {
   getEventByCodeUseCase,
   getEventByIdUseCase,
 } from '../../data/usecases/eventUseCase'
-import Log from '../../../config/logger'
 import { errorMessagesPTBR } from '../../../_shared/errors-messages'
 import { responseMessagesPTBR } from '../../../_shared/response'
 
@@ -64,9 +62,8 @@ export async function createEventController(
   res: Response,
 ) {
   try {
-    const body = req.body
-    const { file } = req
     const { user } = req as unknown as UserLogged
+    const { body, file } = req
     const data = {
       ...body,
       file,
@@ -74,14 +71,16 @@ export async function createEventController(
 
     const createdEvent = await createEventUseCase(data, user)
 
-    return res.status(201).json({ createdEvent })
-  } catch (error: any) {
-    return res.status(500).json(error.message)
+    return res
+      .status(201)
+      .json({ [responseMessagesPTBR['event/CREATED']]: createdEvent })
+  } catch (err: any) {
+    return res.status(500).json(err.message)
   }
 }
 
 export async function deleteEventController(req: Request, res: Response) {
-  const id = req.params.id
+  const { id } = req.params
 
   try {
     const deletedEvent = await deleteEventUseCase(id)

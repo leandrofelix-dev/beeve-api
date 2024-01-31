@@ -1,5 +1,4 @@
 import { prisma } from '../../../config/prisma'
-import { AuthenticatedRequest } from '../../presentation/middlewares/authMiddleware'
 import { errorMessagesPTBR } from '../../../_shared/errors-messages'
 import { UserCreateDTO } from '../../domain/models/userDTO'
 import {
@@ -10,11 +9,9 @@ import {
 } from '../../infra/repositories/userRepository'
 import bcrypt from 'bcrypt'
 import { User } from '@prisma/client'
+import { UserInfo } from '../../../_shared/types'
 
-export async function createUserUseCase(
-  req: AuthenticatedRequest,
-  data: UserCreateDTO,
-) {
+export async function createUserUseCase(data: UserCreateDTO, user: UserInfo) {
   const {
     fullName,
     email,

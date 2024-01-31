@@ -9,6 +9,7 @@ import {
   getUserUseCase,
 } from '../../data/usecases/userUseCase'
 import { errorMessagesPTBR } from '../../../_shared/errors-messages'
+import { UserLogged } from '../../../_shared/types'
 
 export async function createUserController(
   req: AuthenticatedRequest,
@@ -16,7 +17,8 @@ export async function createUserController(
 ) {
   try {
     const data = req.body
-    const createdUser = await createUserUseCase(req, data)
+    const { user } = req as unknown as UserLogged
+    const createdUser = await createUserUseCase(data, user)
 
     return res
       .status(201)
@@ -26,17 +28,20 @@ export async function createUserController(
   }
 }
 
-export async function deleteUserController(
+export async function getUserController(
   req: AuthenticatedRequest,
   res: Response,
 ) {
   try {
     const id = req.params.id
-    const deletedUser = await deleteUserUseCase(id)
+    const user = await getUserUseCase(id)
 
-    return res
-      .status(201)
-      .json({ [responseMessagesPTBR['user/DELETED']]: deletedUser.id })
+    if (!user)
+      return res
+        .status(400)
+        .json({ msg: [errorMessagesPTBR['user/NOT_FOUND']] })
+
+    return res.status(201).json(user)
   } catch (err: any) {
     return res.status(400).json({ error: err.message })
   }
@@ -59,20 +64,17 @@ export async function editUserController(
   }
 }
 
-export async function getUserController(
+export async function deleteUserController(
   req: AuthenticatedRequest,
   res: Response,
 ) {
   try {
     const id = req.params.id
-    const user = await getUserUseCase(id)
+    const deletedUser = await deleteUserUseCase(id)
 
-    if (!user)
-      return res
-        .status(400)
-        .json({ msg: [errorMessagesPTBR['user/NOT_FOUND']] })
-
-    return res.status(201).json(user)
+    return res
+      .status(201)
+      .json({ [responseMessagesPTBR['user/DELETED']]: deletedUser.id })
   } catch (err: any) {
     return res.status(400).json({ error: err.message })
   }
