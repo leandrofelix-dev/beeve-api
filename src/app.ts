@@ -1,15 +1,31 @@
-import express, { NextFunction, Request, Response } from 'express'
-import 'reflect-metadata'
-import { AuthenticatedRequest } from './presentation/middlewares/authMiddleware'
-import { Private, Public } from './presentation/decorators/routesPrivacy'
+// Arquivo: app.ts
+import dotenv from 'dotenv'
+import express, { Request, Response, NextFunction } from 'express'
+import helmet from 'helmet'
+import { CORSConfig } from '../config/cors'
+import { connectToPostgres } from '../config/prisma'
+import { connectToSupabase } from '../config/supa'
+import {
+  AuthenticatedRequest,
+  authenticate,
+} from './presentation/middlewares/authMiddleware'
+import router from './routes'
+import { AuthRequired } from './presentation/decorators/routesPrivacy'
 
+dotenv.config()
+connectToPostgres()
+connectToSupabase()
+
+const port = process.env.PORT || 4000
 const app = express()
 
-function authenticate(
-  req: AuthenticatedRequest,
-  res: Response,
-  next: NextFunction,
-) {
+app.use(express.json())
+app.use(CORSConfig)
+app.use(helmet())
+
+app.use('/api/', router)
+
+function auth(req: AuthenticatedRequest, res: Response, next: NextFunction) {
   if (!req.user) {
     return res.status(401).send('Acesso negado. Autenticação obrigatória.')
   }
@@ -17,28 +33,22 @@ function authenticate(
 }
 
 class PublicController {
-  @Public
+  @AuthRequired
   static publicRoute(req: Request, res: Response) {
     res.send('Rota pública acessada')
   }
 }
 
 class PrivateController {
-  @Private
+  @AuthRequired
   static privateRoute(req: AuthenticatedRequest, res: Response) {
-    if (!req.user) {
-      return res
-        .status(403)
-        .send('Acesso negado. Rota privada, autenticação obrigatória.')
-    }
     res.send('Rota privada acessada')
   }
 }
 
-app.get('/public', PublicController.publicRoute)
-app.get('/private', authenticate, PrivateController.privateRoute)
+app.get('/api/public', PublicController.publicRoute)
+app.get('/api/private', authenticate, auth, PrivateController.privateRoute)
 
-const port = process.env.PORT || 4000
 app.listen(port, () => {
-  console.log(`Servidor ouvindo na porta ${port}`)
+  console.info(`API iniciada na porta ${port} 🚀`)
 })
