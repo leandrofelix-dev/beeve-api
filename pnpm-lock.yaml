@@ -59,6 +59,9 @@ dependencies:
   optional:
     specifier: ^0.1.4
     version: 0.1.4
+  reflect-metadata:
+    specifier: ^0.2.1
+    version: 0.2.1
   sharp:
     specifier: ^0.33.2
     version: 0.33.2
@@ -8304,6 +8307,10 @@ packages:
     engines: {node: '>=8.10.0'}
     dependencies:
       picomatch: 2.3.1
+
+  /reflect-metadata@0.2.1:
+    resolution: {integrity: sha512-i5lLI6iw9AU3Uu4szRNPPEkomnkjRTaVt9hy/bn5g/oSzekBSMeLZblcjP74AW0vBabqERLLIrz+gR8QYR54Tw==}
+    dev: false
 
   /reflect.getprototypeof@1.0.4:
     resolution: {integrity: sha512-ECkTw8TmJwW60lOTR+ZkODISW6RQ8+2CL3COqtiJKLd6MmB45hN51HprHFziKLGkAuTGQhBb91V8cy+KHlaCjw==}
