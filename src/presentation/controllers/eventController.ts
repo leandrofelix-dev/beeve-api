@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Request, Response } from 'express'
+import { Request } from 'express'
 import { AuthenticatedRequest } from '../middlewares/authMiddleware'
-import { UserLogged } from '../../../_shared/types'
+import { APIResponse, UserLogged } from '../../../_shared/types'
 import {
   createEventUseCase,
   deleteEventUseCase,
@@ -12,54 +12,73 @@ import {
 } from '../../data/usecases/eventUseCase'
 import { errorMessagesPTBR } from '../../../_shared/errors-messages'
 import { responseMessagesPTBR } from '../../../_shared/response'
+import logger from '../../../config/logger'
 
-export async function getEventByCodeController(req: Request, res: Response) {
-  const code = req.params.code
-  try {
-    const event = await getEventByCodeUseCase(code)
-    if (event)
-      return res
-        .status(404)
-        .json({ error: errorMessagesPTBR['event/NOT_FOUND'] })
-
-    return res.status(201).json({ event })
-  } catch (err: any) {
-    return res.status(400).json({ error: err.message })
-  }
-}
-
-export async function getEventByIdController(req: Request, res: Response) {
-  const id = req.params.id
-  try {
-    const event = await getEventByIdUseCase(id)
-    if (event)
-      return res
-        .status(404)
-        .json({ error: errorMessagesPTBR['event/NOT_FOUND'] })
-
-    return res.status(201).json({ event })
-  } catch (err: any) {
-    return res.status(400).json({ error: err.message })
-  }
-}
-
-export async function getAllEventsController(req: Request, res: Response) {
+export async function getAllEventsController(req: Request, res: APIResponse) {
   try {
     const events = await getAllEventsUseCase()
-    if (events)
+    if (!events)
+      return res
+        .status(404)
+        .json({ content: { message: errorMessagesPTBR['event/NOT_FOUND'] } })
+
+    return res.status(201).json({
+      content: { message: responseMessagesPTBR['api/SUCCESS'], body: events },
+    })
+  } catch (err: any) {
+    logger.error(err.message)
+    return res.status(500).json({
+      content: { message: errorMessagesPTBR['api/ERROR'] },
+    })
+  }
+}
+
+export async function getEventByCodeController(req: Request, res: APIResponse) {
+  const { code } = req.params
+  try {
+    const event = await getEventByCodeUseCase(code)
+    if (!event)
+      return res.status(404).json({
+        content: {
+          message: errorMessagesPTBR['event/NOT_FOUND'],
+          body: event,
+        },
+      })
+
+    return res.status(201).json({
+      content: { message: responseMessagesPTBR['api/SUCCESS'], body: event },
+    })
+  } catch (err: any) {
+    logger.error(err.message)
+    return res.status(500).json({
+      content: { message: errorMessagesPTBR['api/ERROR'] },
+    })
+  }
+}
+
+export async function getEventByIdController(req: Request, res: APIResponse) {
+  const { id } = req.params
+  try {
+    const event = await getEventByIdUseCase(id)
+    if (!event)
       return res
         .status(404)
         .json({ error: errorMessagesPTBR['event/NOT_FOUND'] })
 
-    return res.status(201).json({ event })
+    return res.status(201).json({
+      content: { message: responseMessagesPTBR['api/SUCCESS'], body: event },
+    })
   } catch (err: any) {
-    return res.status(400).json({ error: err.message })
+    logger.error(err.message)
+    return res.status(500).json({
+      content: { message: errorMessagesPTBR['api/ERROR'] },
+    })
   }
 }
 
 export async function createEventController(
   req: AuthenticatedRequest,
-  res: Response,
+  res: APIResponse,
 ) {
   try {
     const { user } = req as unknown as UserLogged
@@ -71,36 +90,53 @@ export async function createEventController(
 
     const createdEvent = await createEventUseCase(data, user)
 
-    return res
-      .status(201)
-      .json({ [responseMessagesPTBR['event/CREATED']]: createdEvent })
+    return res.status(201).json({
+      content: { message: responseMessagesPTBR['event/CREATED'] },
+      body: createdEvent,
+    })
   } catch (err: any) {
-    return res.status(500).json(err.message)
+    logger.error(err.message)
+    return res.status(500).json({
+      content: { message: errorMessagesPTBR['api/ERROR'] },
+    })
   }
 }
 
-export async function deleteEventController(req: Request, res: Response) {
+export async function deleteEventController(req: Request, res: APIResponse) {
   const { id } = req.params
-
   try {
     const deletedEvent = await deleteEventUseCase(id)
 
-    return res.status(201).json({ deleted: deletedEvent.id })
-  } catch (error: any) {
-    return res.status(500).json(error.message)
+    return res.status(201).json({
+      content: {
+        message: responseMessagesPTBR['event/DELETED'],
+        body: deletedEvent,
+      },
+    })
+  } catch (err: any) {
+    logger.error(err.message)
+    return res.status(500).json({
+      content: { message: errorMessagesPTBR['api/ERROR'] },
+    })
   }
 }
 
-export async function editEventController(req: Request, res: Response) {
-  const id = req.params.id
-  const data = req.body
+export async function editEventController(req: Request, res: APIResponse) {
+  const { id } = req.params
+  const { body } = req
   try {
-    const editedEvent = await editEventUseCase(id, data)
+    const editedEvent = await editEventUseCase(id, body)
 
-    return res
-      .status(201)
-      .json({ [responseMessagesPTBR['user/UPDATED']]: editedEvent.id })
+    return res.status(201).json({
+      content: {
+        message: responseMessagesPTBR['event/UPDATED'],
+        body: editedEvent,
+      },
+    })
   } catch (err: any) {
-    return res.status(400).json({ error: err.message })
+    logger.error(err.message)
+    return res.status(500).json({
+      content: { message: errorMessagesPTBR['api/ERROR'] },
+    })
   }
 }

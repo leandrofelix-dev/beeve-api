@@ -1,5 +1,9 @@
 export const errorMessagesPTBR = {
+  'api/ERROR': 'Ocorreu um erro interno. Tente novamente mais tarde.',
+
   'config/DB_CONN_ERROR': 'Não foi possível conectar ao banco de dados.',
+
+  'auth/INVALID_CREDENTIALS': 'Credenciais inválidas.',
 
   'event/INVALID_EVENT_CODE': 'Código de evento inválido.',
   'event/INVALID_EVENT_ID': 'Id de evento inválido.',

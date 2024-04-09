@@ -10,7 +10,6 @@ export async function createUserRepository(data: Omit<User, 'id'>) {
       isExternal: data.isExternal,
       profilePicUrl: data.profilePicUrl,
       institutionalCode: data.institutionalCode,
-      dateOfBirth: data.dateOfBirth,
     },
   })
 }

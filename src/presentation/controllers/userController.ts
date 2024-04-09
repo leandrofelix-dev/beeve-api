@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Response } from 'express'
 import { responseMessagesPTBR } from '../../../_shared/response'
 import { AuthenticatedRequest } from '../middlewares/authMiddleware'
 import {
@@ -9,11 +8,11 @@ import {
   getUserUseCase,
 } from '../../data/usecases/userUseCase'
 import { errorMessagesPTBR } from '../../../_shared/errors-messages'
-import { UserLogged } from '../../../_shared/types'
+import { APIResponse, UserLogged } from '../../../_shared/types'
 
 export async function createUserController(
   req: AuthenticatedRequest,
-  res: Response,
+  res: APIResponse,
 ) {
   try {
     const data = req.body
@@ -30,7 +29,7 @@ export async function createUserController(
 
 export async function getUserController(
   req: AuthenticatedRequest,
-  res: Response,
+  res: APIResponse,
 ) {
   try {
     const id = req.params.id
@@ -49,7 +48,7 @@ export async function getUserController(
 
 export async function editUserController(
   req: AuthenticatedRequest,
-  res: Response,
+  res: APIResponse,
 ) {
   try {
     const id = req.params.id
@@ -66,7 +65,7 @@ export async function editUserController(
 
 export async function deleteUserController(
   req: AuthenticatedRequest,
-  res: Response,
+  res: APIResponse,
 ) {
   try {
     const id = req.params.id

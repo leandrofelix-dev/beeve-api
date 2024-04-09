@@ -7,64 +7,90 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum SubscriptionStatus {
+  PENDING
+  COMPLETED
+  MISSED
+}
+
 model Role {
-  id          String     @id @default(uuid())
+  id          String @id @unique @default(uuid())
   name        String
   description String
-  roleUsers   RoleUser[]
+  users       User[]
+
+  Permissions    Permission[]
+  RolePermission RolePermission[]
 
   @@map("roles")
 }
 
-model RoleUser {
-  id     String @id @default(uuid())
-  idUser String
-  idRole String
-  user   User   @relation(fields: [idUser], references: [id])
-  role   Role   @relation(fields: [idRole], references: [id])
+model Permission {
+  id             String           @id @default(uuid())
+  description    String
+  roles          Role[]
+  RolePermission RolePermission[]
 
-  @@map("role_users")
+  @@map("permissions")
+}
+
+model RolePermission {
+  id           String @id @default(uuid())
+  roleId       String
+  permissionId String
+
+  role       Role       @relation(fields: [roleId], references: [id])
+  permission Permission @relation(fields: [permissionId], references: [id])
+
+  @@map("role_permissions")
 }
 
 model User {
-  id                String         @id @default(uuid())
+  id                String  @id @default(uuid())
   fullName          String
-  dateOfBirth       DateTime       @default(now())
-  email             String         @unique
+  email             String  @unique
   passwordHash      String
   profilePicUrl     String?
   isExternal        Boolean
-  institutionalCode String?
-  Subscriptions     Subscription[]
-  createdEvents     Event[]
-  RoleUser          RoleUser[]
+  institutionalCode String? @unique
+  roleId            String?
+
+  role Role? @relation(fields: [roleId], references: [id])
+
+  subscriptions Subscription[]
+  createdEvents Event[]
 
   @@map("users")
 }
 
 model Event {
-  id              String         @id @default(uuid())
+  id              String   @id @default(uuid())
+  eventCode       String   @unique
   name            String
   idCreator       String
-  dateTime        DateTime
-  location        String
   description     String
-  maxParticipants Int
-  eventCode       String         @unique
-  isPublic        Boolean
+  location        String?
   coverUrl        String?
-  creator         User           @relation(fields: [idCreator], references: [id])
-  Subscriptions   Subscription[]
+  startDateTime   DateTime
+  endDateTime     DateTime
+  isRemote        Boolean
+  isPublic        Boolean
+  maxParticipants Int?
+
+  creator       User           @relation(fields: [idCreator], references: [id])
+  subscriptions Subscription[]
 
   @@map("events")
 }
 
 model Subscription {
-  id          String @id @default(uuid())
-  idUser      String
-  idEvent     String
-  participant User   @relation(fields: [idUser], references: [id])
-  event       Event  @relation(fields: [idEvent], references: [id], onDelete: Cascade)
+  id      String             @id @default(uuid())
+  idUser  String
+  idEvent String
+  status  SubscriptionStatus
+
+  participant User  @relation(fields: [idUser], references: [id])
+  event       Event @relation(fields: [idEvent], references: [id], onDelete: Cascade)
 
   @@map("subscriptions")
 }

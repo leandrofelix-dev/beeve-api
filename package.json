@@ -13,6 +13,7 @@
     "build": "npx tsup src",
     "start": "node dist/app.js",
     "prisma:generate": "prisma generate",
+    "prisma:seed": "ts-node-dev prisma/seed.ts",
     "commit": "cz"
   },
   "keywords": [],
@@ -31,6 +32,7 @@
     "eslint": "^8.56.0",
     "prisma": "^5.7.1",
     "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
     "tsup": "^8.0.1",
     "tsx": "^4.7.0",
     "typescript": "^5.3.3"

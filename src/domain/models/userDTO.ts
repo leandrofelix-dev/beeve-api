@@ -1,6 +1,6 @@
 export type UserCreateDTO = {
   fullName: string
-  dateOfBirth: string
+  // dateOfBirth: string
   email: string
   password: string
   passwordConfirmation: string

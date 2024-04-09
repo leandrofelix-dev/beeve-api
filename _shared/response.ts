@@ -1,4 +1,5 @@
 export const responseMessagesPTBR = {
+  'api/SUCCESS': 'Operação realizada com sucesso.',
   'subscription/CREATED': 'Inscrição realizada com sucesso.',
   'subscription/DELETED': 'Inscrição excluída com sucesso.',
 
