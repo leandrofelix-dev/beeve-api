@@ -29,3 +29,16 @@ export const errorMessagesPTBR = {
   'supa/MISSING_FILE_URL': 'URL do arquivo não encontrado.',
   'supa/UPLOAD_ERROR': 'Erro ao fazer upload da imagem.',
 }
+
+export const zodMessagesPTBR = {
+  minLength: (fieldName: string, minLength: number) =>
+    `O campo ${fieldName} deve ter no mínimo ${minLength} caracteres.`,
+  maxLength: (fieldName: string, maxLength: number) =>
+    `O campo ${fieldName} deve ter no máximo ${maxLength} caracteres.`,
+  validDateTime: (fieldName: string) =>
+    `O campo ${fieldName} deve ser uma data em string no formato AAAA-MM-DD HH:MM:SS.SS.`,
+  minNumber: (fieldName: string, minValue: number) =>
+    `O campo ${fieldName} deve ser no mínimo ${minValue}.`,
+  booleanValue: (fieldName: string) =>
+    `O campo ${fieldName} deve ser 'true' ou 'false'.`,
+}

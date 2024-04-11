@@ -13,7 +13,8 @@
     "build": "npx tsup src",
     "start": "node dist/app.js",
     "prisma:generate": "prisma generate",
-    "prisma:seed": "ts-node-dev prisma/seed.ts",
+    "prisma:seed-base": "prisma migrate dev && ts-node-dev prisma/seed-base.ts",
+    "prisma:seed-mock": "prisma migrate dev && ts-node-dev prisma/seed-mock.ts",
     "commit": "cz"
   },
   "keywords": [],

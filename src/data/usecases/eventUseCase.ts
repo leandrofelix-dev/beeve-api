@@ -1,5 +1,6 @@
 import { errorMessagesPTBR } from '../../../_shared/errors-messages'
 import { UserInfo } from '../../../_shared/types'
+import logger from '../../../config/logger'
 import { EventCreateDTO } from '../../domain/models/eventDTO'
 import {
   createEventRepository,
@@ -16,26 +17,35 @@ export async function createEventUseCase(data: EventCreateDTO, user: UserInfo) {
 
   const maxParticipants = Number(data.maxParticipants)
   const isPublic = Boolean(data.isPublic)
-  const dateTime = new Date(data.dateTime)
+  const isRemote = Boolean(data.isRemote)
+  const startDateTime = new Date(data.startDateTime)
+  const endDateTime = new Date(data.endDateTime)
 
   const eventCode: string = generateCode()
 
   const alreadyExistThisEventCode = await getEventByCodeRepository(eventCode)
 
-  if (alreadyExistThisEventCode)
-    throw new Error(errorMessagesPTBR['event/CODE_ALREADY_EXIST'])
+  if (alreadyExistThisEventCode) {
+    logger.error(errorMessagesPTBR['event/CODE_ALREADY_EXIST'])
+    return new Error(errorMessagesPTBR['api/ERROR'])
+  }
 
-  if (!coverUrl) throw new Error(errorMessagesPTBR['event/COVER_NOT_FOUND'])
+  if (!coverUrl) {
+    logger.error(errorMessagesPTBR['event/COVER_NOT_FOUND'])
+    return new Error(errorMessagesPTBR['api/ERROR'])
+  }
 
   const params = {
     idCreator: user.userId,
-    coverUrl,
     name,
     location,
     description,
     maxParticipants,
     isPublic,
-    dateTime,
+    coverUrl,
+    startDateTime,
+    endDateTime,
+    isRemote,
     eventCode,
   }
   return await createEventRepository(params)

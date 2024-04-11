@@ -4,6 +4,8 @@ import { auth } from '../../domain/contracts/authContract'
 import { subscription } from '../../domain/contracts/subscriptionContract'
 import { user } from '../../domain/contracts/userContract'
 import { event } from '../../domain/contracts/eventContract'
+import logger from '../../../config/logger'
+import { errorMessagesPTBR } from '../../../_shared/errors-messages'
 
 export function authValidator(req: Request, res: Response, next: NextFunction) {
   const { body } = req
@@ -50,18 +52,23 @@ export function createEventValidator(
 ) {
   const form = JSON.parse(JSON.stringify(req.body))
   const maxParticipants = Number(form.maxParticipants)
-  const dateTime = new Date(form.dateTime)
+  const startDateTime = new Date(form.startDateTime)
+  const endDateTime = new Date(form.endDateTime)
 
   const data = {
     ...form,
     maxParticipants,
-    dateTime,
+    startDateTime,
+    endDateTime,
   }
 
   try {
     event.parse(data)
     next()
-  } catch (err: any) {
-    res.status(400).json({ msg: err.errors })
+  } catch (error: any) {
+    logger.error(error)
+    return res.status(500).json({
+      content: { message: errorMessagesPTBR['api/ERROR'] },
+    })
   }
 }

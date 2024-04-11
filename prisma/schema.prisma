@@ -27,6 +27,7 @@ model Role {
 
 model Permission {
   id             String           @id @default(uuid())
+  name           String
   description    String
   roles          Role[]
   RolePermission RolePermission[]
@@ -42,7 +43,7 @@ model RolePermission {
   role       Role       @relation(fields: [roleId], references: [id])
   permission Permission @relation(fields: [permissionId], references: [id])
 
-  @@map("role_permissions")
+  @@map("role_permFissions")
 }
 
 model User {
