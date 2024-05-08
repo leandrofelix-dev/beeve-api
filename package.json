@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "engines": {
-    "node": "18.17.0"
+    "node": "^18.0.0"
   },
   "scripts": {
     "dev": "tsx watch src/app.ts",
@@ -32,15 +32,11 @@
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "^8.56.0",
     "prisma": "^5.7.1",
-    "ts-node": "^10.9.2",
-    "ts-node-dev": "^2.0.0",
-    "tsup": "^8.0.1",
     "tsx": "^4.7.0",
     "typescript": "^5.3.3"
   },
   "dependencies": {
     "@prisma/client": "^5.7.1",
-    "@supabase/supabase-js": "^2.39.2",
     "@types/bcrypt": "^5.0.2",
     "@types/jsonwebtoken": "^9.0.5",
     "bcrypt": "^5.1.1",
@@ -49,10 +45,7 @@
     "config": "^3.3.9",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
-    "expo-module-scripts": "^3.1.0",
     "express": "^4.18.2",
-    "firebase-admin": "^12.0.0",
-    "fs": "0.0.1-security",
     "helmet": "^7.1.0",
     "jsonwebtoken": "^9.0.2",
     "multer": "1.4.5-lts.1",
@@ -60,7 +53,6 @@
     "sharp": "^0.33.2",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.0",
-    "tsc": "^2.0.4",
     "winston": "^3.11.0",
     "zod": "^3.22.4"
   },

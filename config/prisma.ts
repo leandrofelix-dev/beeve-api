@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client'
-import { errorMessagesPTBR } from '../_shared/errors-messages'
+import { errorMessagesPTBR } from '../shared/errors-messages'
 
 const prisma = new PrismaClient(
   process.env.NODE_ENV === 'production'

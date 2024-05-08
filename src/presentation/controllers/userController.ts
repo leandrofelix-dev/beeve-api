@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { responseMessagesPTBR } from '../../../_shared/response'
+import { responseMessagesPTBR } from '../../../shared/response'
 import { AuthenticatedRequest } from '../middlewares/authMiddleware'
 import {
   createUserUseCase,
@@ -7,8 +7,8 @@ import {
   editUserUseCase,
   getUserUseCase,
 } from '../../data/usecases/userUseCase'
-import { errorMessagesPTBR } from '../../../_shared/errors-messages'
-import { APIResponse, UserLogged } from '../../../_shared/types'
+import { errorMessagesPTBR } from '../../../shared/errors-messages'
+import { APIResponse, UserLogged } from '../../../shared/types'
 
 export async function createUserController(
   req: AuthenticatedRequest,

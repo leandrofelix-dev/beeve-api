@@ -27,6 +27,7 @@ export async function deleteEventRepository(id: string) {
   })
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function editEventRepository(id: string, data: any) {
   return await prisma.event.update({
     where: { id },

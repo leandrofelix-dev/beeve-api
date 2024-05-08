@@ -9,7 +9,6 @@ import {
 } from '../controllers/eventController'
 import { authenticate } from '../middlewares/authMiddleware'
 import { sendFile } from '../../../config/multer'
-import { uploadToSupabase } from '../../infra/services/supabase'
 import { createEventValidator } from '../middlewares/validateMiddleware'
 
 export function eventRoutes(router: Router) {
@@ -22,7 +21,6 @@ export function eventRoutes(router: Router) {
       authenticate,
       sendFile.single('file'),
       createEventValidator,
-      uploadToSupabase,
       createEventController,
     )
     .delete('/event/:id', deleteEventController)

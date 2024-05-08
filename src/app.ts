@@ -3,13 +3,11 @@ import express from 'express'
 import helmet from 'helmet'
 import { CORSConfig } from '../config/cors'
 import { connectToPostgres } from '../config/prisma'
-import { connectToSupabase } from '../config/supa'
 import router from './routes'
 
 dotenv.config()
 
 connectToPostgres()
-connectToSupabase()
 
 const port = process.env.PORT || 4000
 const app = express()

@@ -1,5 +1,5 @@
-import { errorMessagesPTBR } from '../../../_shared/errors-messages'
-import { UserInfo } from '../../../_shared/types'
+import { errorMessagesPTBR } from '../../../shared/errors-messages'
+import { UserInfo } from '../../../shared/types'
 import logger from '../../../config/logger'
 import { EventCreateDTO } from '../../domain/models/eventDTO'
 import {
@@ -27,11 +27,6 @@ export async function createEventUseCase(data: EventCreateDTO, user: UserInfo) {
 
   if (alreadyExistThisEventCode) {
     logger.error(errorMessagesPTBR['event/CODE_ALREADY_EXIST'])
-    return new Error(errorMessagesPTBR['api/ERROR'])
-  }
-
-  if (!coverUrl) {
-    logger.error(errorMessagesPTBR['event/COVER_NOT_FOUND'])
     return new Error(errorMessagesPTBR['api/ERROR'])
   }
 

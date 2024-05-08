@@ -1,5 +1,5 @@
 import { prisma } from '../../../config/prisma'
-import { errorMessagesPTBR } from '../../../_shared/errors-messages'
+import { errorMessagesPTBR } from '../../../shared/errors-messages'
 import { UserCreateDTO } from '../../domain/models/userDTO'
 import {
   createUserRepository,
@@ -9,7 +9,7 @@ import {
 } from '../../infra/repositories/userRepository'
 import bcrypt from 'bcrypt'
 import { User } from '@prisma/client'
-import { UserInfo } from '../../../_shared/types'
+import { UserInfo } from '../../../shared/types'
 
 export async function createUserUseCase(data: UserCreateDTO, user: UserInfo) {
   const {
@@ -22,7 +22,7 @@ export async function createUserUseCase(data: UserCreateDTO, user: UserInfo) {
     institutionalCode,
   } = data
 
-  const dateOfBirth = new Date(data.dateOfBirth)
+  console.log('quem fez a request: ', user)
 
   if (password !== passwordConfirmation)
     throw new Error(errorMessagesPTBR['user/PASSWORD_NOT_MATCH'])
@@ -47,7 +47,7 @@ export async function createUserUseCase(data: UserCreateDTO, user: UserInfo) {
     isExternal,
     profilePicUrl,
     institutionalCode,
-    dateOfBirth,
+    roleId: 'none',
   })
 }
 

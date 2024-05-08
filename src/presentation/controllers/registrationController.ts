@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Request, Response } from 'express'
 
-import { responseMessagesPTBR } from '../../../_shared/response'
+import { responseMessagesPTBR } from '../../../shared/response'
 import {
   createSubscriptionUseCase,
   deleteSubscriptionUseCase,

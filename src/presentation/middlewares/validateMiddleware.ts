@@ -5,7 +5,7 @@ import { subscription } from '../../domain/contracts/subscriptionContract'
 import { user } from '../../domain/contracts/userContract'
 import { event } from '../../domain/contracts/eventContract'
 import logger from '../../../config/logger'
-import { errorMessagesPTBR } from '../../../_shared/errors-messages'
+import { errorMessagesPTBR } from '../../../shared/errors-messages'
 
 export function authValidator(req: Request, res: Response, next: NextFunction) {
   const { body } = req
@@ -66,6 +66,7 @@ export function createEventValidator(
     event.parse(data)
     next()
   } catch (error: any) {
+    console.error(error.message)
     logger.error(error)
     return res.status(500).json({
       content: { message: errorMessagesPTBR['api/ERROR'] },

@@ -1,7 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import fs from 'fs'
+import path from 'path'
+
 import { Request } from 'express'
 import { AuthenticatedRequest } from '../middlewares/authMiddleware'
-import { APIResponse, UserLogged } from '../../../_shared/types'
+import { APIResponse, UserLogged } from '../../../shared/types'
 import {
   createEventUseCase,
   deleteEventUseCase,
@@ -10,8 +13,8 @@ import {
   getEventByCodeUseCase,
   getEventByIdUseCase,
 } from '../../data/usecases/eventUseCase'
-import { errorMessagesPTBR } from '../../../_shared/errors-messages'
-import { responseMessagesPTBR } from '../../../_shared/response'
+import { errorMessagesPTBR } from '../../../shared/errors-messages'
+import { responseMessagesPTBR } from '../../../shared/response'
 import logger from '../../../config/logger'
 
 export async function getAllEventsController(req: Request, res: APIResponse) {
@@ -88,6 +91,19 @@ export async function createEventController(
       file,
     }
 
+    if (!file) return res.send('sem arquivo')
+
+    const fileName = `${Date.now()}-${file.originalname}`
+    const filePath = path.join(
+      __dirname,
+      '../../uploads/event-covers',
+      fileName,
+    )
+
+    fs.writeFileSync(filePath, file.buffer)
+
+    data.coverUrl = fileName
+
     const createdEvent = await createEventUseCase(data, user)
 
     return res.status(201).json({
@@ -95,10 +111,11 @@ export async function createEventController(
       body: createdEvent,
     })
   } catch (err: any) {
+    console.log(err.message)
     logger.error(err.message)
-    return res.status(500).json({
-      content: { message: errorMessagesPTBR['api/ERROR'] },
-    })
+    // return res.status(500).json({
+    //   content: { message: errorMessagesPTBR['api/ERROR'] },
+    // })
   }
 }
 

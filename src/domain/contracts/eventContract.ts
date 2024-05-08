@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { zodMessagesPTBR } from '../../../_shared/errors-messages'
+import { zodMessagesPTBR } from '../../../shared/errors-messages'
 
 const isValidDateString = (v: string): boolean => !isNaN(Date.parse(v))
 const isValidBooleanString = (v: string): boolean =>

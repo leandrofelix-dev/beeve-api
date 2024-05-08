@@ -1,8 +1,8 @@
 import { Request } from 'express'
 import dotenv from 'dotenv'
 import { authUseCase } from '../../data/usecases/authUseCase'
-import { APIResponse } from '../../../_shared/types'
-import { errorMessagesPTBR } from '../../../_shared/errors-messages'
+import { APIResponse } from '../../../shared/types'
+import { errorMessagesPTBR } from '../../../shared/errors-messages'
 dotenv.config()
 
 export async function createToken(req: Request, res: APIResponse) {

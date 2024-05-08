@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express'
+import { Response, NextFunction } from 'express'
 import { AuthenticatedRequest } from './authMiddleware'
 
 function verifyCredentials(
@@ -8,7 +8,6 @@ function verifyCredentials(
 ) {
   if (!req.user)
     return res.status(401).send('Acesso negado. Autenticação obrigatória.')
-
   next()
 }
 
