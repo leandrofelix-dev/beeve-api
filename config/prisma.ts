@@ -13,7 +13,7 @@ const prisma = new PrismaClient(
 async function connectToPostgres() {
   try {
     await prisma.$connect()
-    console.info('Conectado ao postgresSQL 🐘')
+    console.info('✅ Banco de dados 🎲 - OK')
   } catch (error) {
     console.error(errorMessagesPTBR['config/DB_CONN_ERROR'], error)
   }
