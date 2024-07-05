@@ -69,5 +69,8 @@ export async function getEventByIdUseCase(id: string) {
 }
 
 export async function getAllEventsUseCase() {
-  return getAllEventsRepository()
+  const events = await getAllEventsRepository()
+  if (events.length === 0)
+    return new Error(errorMessagesPTBR['event/NOT_FOUND'])
+  return events
 }
